@@ -10,6 +10,7 @@
 ## Functions Implementation
 
 - Row checker	
+	
 	-Params: `Row Used`, `Row index` and `current number`
 	-Return: boolean		
 		-true - if current number not in current row
