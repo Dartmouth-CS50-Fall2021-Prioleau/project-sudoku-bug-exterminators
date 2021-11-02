@@ -11,11 +11,11 @@
 
 - Row checker	
 	
-	-Params: `Row Used`, `Row index` and `current number`
-	-Return: boolean		
-		-true - if current number not in current row
-		-false - if current number in current row
-	-Implementation
+	- Params: `Row Used`, `Row index` and `current number`
+	- Return: boolean		
+		- true - if current number not in current row
+		- false - if current number in current row
+	- Implementation
 		- `row index` to get the set of current row used numbers
 		-  use set_find to check the exisitance
 		-  return the result
