@@ -39,8 +39,7 @@ We need a `struct` to store the sudoku. The structure would need the following m
 
   or
 
-  - Randomly generate 27 or 35 numbers on the board depending on the difficulty
-  1. Randomly generate a series of positions to fill
+  1. Randomly generate a series of positions on the board
   2. For each position, check the range of numbers to generate
   3. For each position randomly generate a number from the range
   
