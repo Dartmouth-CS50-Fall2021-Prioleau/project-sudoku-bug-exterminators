@@ -37,6 +37,8 @@ We need a `struct` to store the sudoku. The structure would need the following m
   1. Loop through each empty box, generate a random number between 1-9.
   2. Check if this number satisfies all three conditions. 
   3. If it does then insert this number.
+  4. Backtracking
+
 - Create sudoku.
   1. Solve board with all empty squares.
   2. Hide number of squares that correspond to difficulty.
