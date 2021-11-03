@@ -1,7 +1,6 @@
-# Your Team Name
-## Your Team Members
+# Bug Exterminators 
+## Alan Sun, Arden Guo
 ## CS50 Fall 2021, Final Project - Sudoku 2.0
 
-GitHub usernames:
+GitHub usernames: alansun17904, ArdenDartmouth
 
-*Please replace this text with any comments you have about the assignment.  Your solutions should be in other files as defined by the assignment.*

@@ -1,4 +1,4 @@
-# Implementation Spec. for Sudoku
+# Implementation Specification for Sudoku 2.0
 
 ## Data Structures
 
@@ -6,6 +6,7 @@
 - Row Used: an array of sets
 - Column Used: an array of sets
 - Box Used: an array of sets (need to think about the index mapping)
+
 
 ## Functions Implementation
 

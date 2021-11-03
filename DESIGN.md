@@ -1,10 +1,15 @@
-# Data Structures
+# Design Specifications for Sudoku 2.0
+This is the design spec for our sudoku project. It includes an overview of the 
+data structures that we will be using as well as some of the functions we 
+plan to implement.
+
+## Data Structures
 We need a `struct` to store the sudoku. The structure would need the following members:
 - 2D array (square)
 - The number of items in each row/column
 - The "box" size
 
-# Functions
+## Functions
 - Check if the sudoku has been solved correctly.
   - Check if number works in the row.
   - Check if number works in column.
@@ -13,7 +18,7 @@ We need a `struct` to store the sudoku. The structure would need the following m
   - Border around each number.
   - Border around each sub-box.
   - Border around the entire box.
-	```c
+	```
 	+-------+-------+-------+
 	| 9 . . | . . . | . . 1 |
 	| 0 . . | . . 2 | . . . |
