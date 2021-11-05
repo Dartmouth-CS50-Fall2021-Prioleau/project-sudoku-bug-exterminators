@@ -48,7 +48,6 @@ typdef struct sudoku {
 	- Implementation: Intersect the three arrays to get the result (i.e. `row used`, `column used` and `box used`)
 
 - Sudoku solver
-	- 
 	- Return: boolean
 	- Implementation:
 		```
@@ -82,6 +81,7 @@ typdef struct sudoku {
 
 - Display sodoku
 	- Params: the board
+
 				
 		
 
