@@ -51,6 +51,11 @@
 	- Return: An array of 0s and 1s 
 	- Implementation: Intersect the three arrays to get the result (i.e. `row used`, `column used` and `box used`)
 
+- Sudoku solver
+	- Return: boolean
+	- Implementation:
+		
+
 - Display sodoku
 				
 		
