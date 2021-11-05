@@ -14,7 +14,7 @@ typdef struct box {
 } box_t;
 
 typdef struct sudoku {
-  box_t **board;
+  box_t ***board;
   int **rows;
   int **columns
   int **boxes;
