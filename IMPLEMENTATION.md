@@ -77,7 +77,8 @@ typdef struct sudoku {
 	- Return: boolean
 	- Implementation:
 		```
-		loop through the board
+		get an array of blank grids of the board
+		loop through the blank grid of the board 
 			for blank grid
 				get the range of possible numbers
 				for each number in the range
