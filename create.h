@@ -1,9 +1,10 @@
 #ifndef CREATE_H
 #define CREATE_H
 
+#include<stdbool.h>
 #include "board.h"
 
-sudoku_t *create(void);
+sudoku_t *create(bool difficulty);
 
 
 #endif 
