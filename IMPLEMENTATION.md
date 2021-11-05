@@ -54,7 +54,15 @@
 - Sudoku solver
 	- Return: boolean
 	- Implementation:
-		
+		```
+		loop through the board
+			for blank grid
+				get the range of possible numbers
+				for each number in the range
+					set the grid to the numnber 
+					update the row/column/box used
+					
+						
 
 - Display sodoku
 				
