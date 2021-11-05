@@ -2,9 +2,9 @@
 
 ## Data Structures
 - Sudoku board:  2D array of type interger
-- Row Used: an array of sets
-- Column Used: an array of sets
-- Box Used: an array of sets (need to think about the index mapping)
+- Row Used: an array of 0s and 1s
+- Column Used: an array of 0s and 1s
+- Box Used: an array of 0s and 1s (need to think about the index mapping)
 
 ```C
 typdef struct sudoku {
@@ -57,6 +57,18 @@ typdef struct sudoku {
 
 			return (row_index % box_size) + (col_index % box_size);
 		```
+
+- Range of numbers
+	- Description: get the range of numbers possible for the current grid
+	- Params: `Row index` and `column index`
+	- Return: An array of 0s and 1s 
+	- Implementation: Intersect the three arrays to get the result (i.e. `row used`, `column used` and `box used`)
+
+- Sudoku solver
+	- Return: boolean
+	- Implementation:
+		
+
 - Display sodoku
 				
 		
