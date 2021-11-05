@@ -74,6 +74,7 @@ typdef struct sudoku {
 	- Implementation: Intersect the three arrays to get the result (i.e. `row used`, `column used` and `box used`)
 
 - Sudoku solver
+	- 
 	- Return: boolean
 	- Implementation:
 		```
@@ -91,6 +92,20 @@ typdef struct sudoku {
 						update the row/column/box back
 		```
 
+- Blank grids of the board
+	- Param: borad
+	- Rerturn: an array of indices for blank grids
+
+- Possible number array (intersection of row/column/box arrays)
+	- Params: `row used`, `column used` and `box used`
+	- Return: an array of 0s and 1s
+	- Implementation: 
+		```
+			create an array for the result
+			loop through index of the arrays
+				the result = bit & operation of the corresponding three elements  
+		```
+		
 - Display sodoku
 				
 		
