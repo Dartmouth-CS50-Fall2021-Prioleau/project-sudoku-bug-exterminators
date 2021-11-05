@@ -28,32 +28,6 @@ typdef struct sudoku {
 
 ## Functions Implementation
 
-- Row checker	
-	
-	- Params: `Row Used`, `Row index` and `current number`
-	- Return: boolean		
-		- true - if current number not in current row
-		- false - if current number in current row
-	- Implementation
-		- `row index` to get the set of current row used numbers
-		-  use set_find to check the exisitance
-		-  return the result
-
-```C
-
-```
-
-- Column checker	
-	- Params: `Column Used`, `Column Index` and `current number`
- 	- Return: similar to Row checker
-	- Implementation: Similar to Row checker
-
-- Box checker	
-	- Params: `Box Used`, `Row index`, `Column index` and `current number`
-	- Return: similar to Row checker
-	- Implementation: similar to Row checker
-		- Use `Index Mapping for Box` to get the index of the box
-
 - Index mapping for box
 	- Params: `Row index`, `Column index`, `box size`
 	- Return: Index of the corresponding box in the array 
@@ -105,8 +79,9 @@ typdef struct sudoku {
 			loop through index of the arrays
 				the result = bit & operation of the corresponding three elements  
 		```
-		
+
 - Display sodoku
+	- Params: the board
 				
 		
 
