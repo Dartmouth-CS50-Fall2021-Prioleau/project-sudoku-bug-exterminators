@@ -1,14 +1,23 @@
 # Implementation Specification for Sudoku 2.0
 
 ## Data Structures
+- Box
+	- The number in the box
+	- The possible numbers that the box could contain
+```C
+typdef struct box {
+	int num;
+	int *possible;
+} box_t;
+```
 - Sudoku board:  2D array of type interger
-- Row Used: an array of 0s and 1s
-- Column Used: an array of 0s and 1s
-- Box Used: an array of 0s and 1s (need to think about the index mapping)
+	- Row Used: an array of 0s and 1s
+	- Column Used: an array of 0s and 1s
+	- Box Used: an array of 0s and 1s (need to think about the index mapping)
 
 ```C
 typdef struct sudoku {
-  int **board;
+  box_t **board;
   int **rows;
   int **columns
   int **boxes;
@@ -74,8 +83,12 @@ typdef struct sudoku {
 				for each number in the range
 					set the grid to the numnber 
 					update the row/column/box used
-					
-						
+					 
+					if (! solver()) 
+
+					set the grid back to 0
+					update the row/column/box back
+
 
 - Display sodoku
 				
