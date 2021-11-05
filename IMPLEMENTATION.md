@@ -86,9 +86,9 @@ typdef struct sudoku {
 					 
 					if (! solver()) 
 
-					set the grid back to 0
-					update the row/column/box back
-	```
+						set the grid back to 0
+						update the row/column/box back
+		```
 
 - Display sodoku
 				
