@@ -44,6 +44,13 @@
 
 			return (row_index % box_size) + (col_index % box_size);
 		```
+
+- Range of numbers
+	- Description: get the range of numbers possible for the current grid
+	- Params: `Row index` and `column index`
+	- Return: An array of 0s and 1s 
+	- Implementation: Intersect the three arrays to get the result (i.e. `row used`, `column used` and `box used`)
+
 - Display sodoku
 				
 		
