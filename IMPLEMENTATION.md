@@ -3,9 +3,9 @@
 ## Data Structures
 
 - Sudoku board:  2D array of type interger
-- Row Used: an array of sets
-- Column Used: an array of sets
-- Box Used: an array of sets (need to think about the index mapping)
+- Row Used: an array of 0s and 1s
+- Column Used: an array of 0s and 1s
+- Box Used: an array of 0s and 1s (need to think about the index mapping)
 
 
 ## Functions Implementation
