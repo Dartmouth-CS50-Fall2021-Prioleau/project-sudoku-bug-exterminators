@@ -1,12 +1,21 @@
 # Implementation Specification for Sudoku 2.0
 
 ## Data Structures
-
 - Sudoku board:  2D array of type interger
 - Row Used: an array of sets
 - Column Used: an array of sets
 - Box Used: an array of sets (need to think about the index mapping)
 
+```C
+typdef struct sudoku {
+  int **board;
+  int **rows;
+  int **columns
+  int **boxes;
+  int dim;
+} sudoku_t;
+
+```
 
 ## Functions Implementation
 
@@ -20,6 +29,10 @@
 		- `row index` to get the set of current row used numbers
 		-  use set_find to check the exisitance
 		-  return the result
+
+```C
+
+```
 
 - Column checker	
 	- Params: `Column Used`, `Column Index` and `current number`

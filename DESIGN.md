@@ -6,6 +6,7 @@ plan to implement.
 ## Data Structures
 We need a `struct` to store the sudoku. The structure would need the following members:
 - 2D array (square)
+- 2D array "checking" board for the rows, columns, and boxes
 - The number of items in each row/column
 - The "box" size
 
