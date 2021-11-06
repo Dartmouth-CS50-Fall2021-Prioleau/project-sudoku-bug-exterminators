@@ -8,12 +8,12 @@
  * each box, and the other represents the entire sudoku board.
  */
 
-typdef struct box {
+typedef struct box {
   int num;
   int *possible;
 } box_t;
 
-typdef struct sudoku {
+typedef struct sudoku {
   box_t ***board;
   int **rows;
   int **columns
