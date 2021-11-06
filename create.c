@@ -94,6 +94,13 @@ sudoku_t *create(bool difficult){
     return sudoku;
 }
 
+/* (description): Calloc for an array of size passed in
+ *
+ * (inputs): dim - represent the size of the array
+ *
+ * (outputs): a malloced array
+ *
+ */
 int* array_create(int dim){
     int* array = calloc(dim, sizeof(int));
     if(array == NULL){
@@ -103,6 +110,15 @@ int* array_create(int dim){
     return array;
 }
 
+/* (description): Maps the position of a specific grid to
+ *                the index of the box which current grid is in
+ *
+ * (inputs): dim is the size of sudoku board for each dimension
+ *           row and col are the indices indicating the position of the grid
+ *
+ * (outputs): an integer - the index of the box for the current grid
+ *
+ */
 int box_index(int row, int col, int dim){
     int box_size = sqrt(dim);
     return (row % box_size) + (col % box_size);
