@@ -9,8 +9,8 @@
  */
 
 typedef struct box {
-	int num;
-	int *possible;
+  int num;
+  int *possible;
 } box_t;
 
 typedef struct sudoku {
