@@ -8,7 +8,8 @@
  */
 
 #include "board.h"
+#include <stdbool.h>
 
-sudoku_t *read(void);
+sudoku_t *read(bool difficult);
 
 #endif

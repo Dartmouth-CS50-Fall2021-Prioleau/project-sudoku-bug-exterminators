@@ -10,14 +10,14 @@
 
 typedef struct box {
 	int num;
-	int *possible;
+	int possible;
 } box_t;
 
 typedef struct sudoku {
   box_t ***board;
-  int **rows;
-  int **columns;
-  int **boxes;
+  int *rows;
+  int *columns;
+  int *boxes;
   int dim;
 } sudoku_t;
 #endif
