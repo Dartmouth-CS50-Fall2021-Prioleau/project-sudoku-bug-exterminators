@@ -25,8 +25,7 @@
  *
  * (outputs): The function will return a pointer to sudoku.
  * 
- * (Support): Right now, the read function onlu support read numbers 
- *            from 0 to 9
+ * (Support): Right now, the read function supports two-digit numbers as well
  * 
  * (TODO):  Before exiting for each case, need to free the momery.
  *
@@ -85,6 +84,13 @@ sudoku_t *read(bool difficult)
             // '.' is specific to our design of blank grid
             c_number = c == '.' ? 0 : c - '0';
             
+            // for the two-digit number
+            if((c = getchar()) != EOF && isdigit(c)){
+                int current = c - '0';
+                c_number = c_number* 10 + current;
+            }
+
+
             // create the grid
             board[row][col] = malloc(sizeof(box_t));
             if(board[row][col] == NULL){
@@ -104,6 +110,8 @@ sudoku_t *read(bool difficult)
         }
     }
 
+    // checking the input number
+    /*
     if(!difficult && num_given != 37){
         fprintf(stderr, "37 numbers should be provided for easy mode. You gave %d numbers. \n", num_ttl);
         exit(4);
@@ -112,7 +120,12 @@ sudoku_t *read(bool difficult)
     if(difficult && num_given != 25){
         fprintf(stderr, "25 numbers should be provided for easy mode. You gave %d numbers. \n", num_ttl);
         exit(4);
-    }
+    }*/
 
     return sudoku;
+}
+
+int main(){
+    sudoku_t* puzzle = read(false);
+    display(puzzle);
 }
