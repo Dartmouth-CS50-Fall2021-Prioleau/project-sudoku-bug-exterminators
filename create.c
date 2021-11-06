@@ -4,6 +4,49 @@
 #include <stdio.h>
 #include <math.h>
 
+/* Alan Sun, Arden Guo
+ * CS50, Fall 2021, Sudoku Project
+ * Display sudoku board (display.c)
+ *
+ * This module contains code that initialize the data structure of 
+ * a sudoku board. After reading from the stdin, the 2D board has been
+ * set up. This module tries to initialize the rows used, col used, and
+ * box used. Initializing the possible numbers of each grid is also 
+ * implemented here.
+ * 
+ * @Data structure:
+ * An integer is used to represent which number from 1 to 9 has been used.
+ * The bit format of the integer with 1s represents the current possition 
+ * has been used, while 0s represents not used yet.
+ * 
+ * @Example
+ *  
+ * +---+---+---+---+---+---+---+---+---+
+ * | 9 | 8 | 7 | 6 | 5 | 4 | 3 | 2 | 1 |
+ * +---+---+---+---+---+---+---+---+---+
+ *            
+ *            
+ *           bit format of 97
+ * +---+---+---+---+---+---+---+---+---+
+ * | 0 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 |   integer: 97
+ * +---+---+---+---+---+---+---+---+---+ 
+ * 
+ * The integer 97 with the bit format indicates that number 1, 6, and 7 has been used.
+ * 
+ */
+
+
+/* (description): Calls the read function to get the sudoku puzzle. Then it 
+ *                initializes the number used for rows, columns, and boxes.
+ *                Finally, it compute the possible numbers for each blank grid
+ *                by doing the bitwise opeartion.
+ *
+ * (inputs): A boolean value indicates if it is a difficult mode
+ *
+ * (outputs): The function will return a pointer to sudoku with all data initialized.
+ *
+ * (support): 
+ */
 sudoku_t *create(bool difficult){
     sudoku_t* sudoku = read(difficult);
     box_t*** board = sudoku->board;
@@ -51,6 +94,13 @@ sudoku_t *create(bool difficult){
     return sudoku;
 }
 
+/* (description): Calloc for an array of size passed in
+ *
+ * (inputs): dim - represent the size of the array
+ *
+ * (outputs): a malloced array
+ *
+ */
 int* array_create(int dim){
     int* array = calloc(dim, sizeof(int));
     if(array == NULL){
@@ -60,6 +110,15 @@ int* array_create(int dim){
     return array;
 }
 
+/* (description): Maps the position of a specific grid to
+ *                the index of the box which current grid is in
+ *
+ * (inputs): dim is the size of sudoku board for each dimension
+ *           row and col are the indices indicating the position of the grid
+ *
+ * (outputs): an integer - the index of the box for the current grid
+ *
+ */
 int box_index(int row, int col, int dim){
     int box_size = sqrt(dim);
     return (row % box_size) + (col % box_size);
