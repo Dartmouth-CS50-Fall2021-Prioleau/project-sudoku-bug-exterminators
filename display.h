@@ -11,4 +11,6 @@
 
 void display(sudoku_t *board);
 
+void sdisplay(sudoku_t *board);
+
 #endif 
