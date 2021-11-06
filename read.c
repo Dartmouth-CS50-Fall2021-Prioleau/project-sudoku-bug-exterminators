@@ -1,7 +1,36 @@
 #include "read.h"
+#include "display.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
+
+
+/* Alan Sun, Arden Guo
+ * CS50, Fall 2021, Sudoku Project
+ * Read from Stdin (read.c)
+ * This module contains a read function that reads a sudoku puzzle
+ * from stdin, extracts and stores the numbers in the sudoku data 
+ * structure.
+ * 
+ * The read function support both simple sudoku and pretty sudoku.
+ * In the case of pretty sudoku, the read function saves the dot . as 0
+ * in the board for further processing.
+ */
+
+/* (description): Reads a sudoku puzzle from stdin, 
+ *                extracts and stores the numbers in 
+ *                the sudoku data structure.
+ *
+ * (inputs): A boolean value indicates if it is a difficult mode
+ *
+ * (outputs): The function will not return a pointer to sudoku.
+ * 
+ * (Support): Right now, the read function onlu support read numbers 
+ *            from 0 to 9
+ * 
+ * (TODO):  Before exiting for each case, need to free the momery.
+ *
+ */
 
 sudoku_t *read(bool difficult)
 {
@@ -14,7 +43,6 @@ sudoku_t *read(bool difficult)
 
     // dim information
     int dim = difficult ? 16 : 9;
-    int num_of_grid = dim * dim;
     sudoku->dim = dim;
 
     // create board
@@ -38,9 +66,22 @@ sudoku_t *read(bool difficult)
     int c_number;
     int row = 0;
     int col = 0;
+    int num_ttl = 0;
+    int num_given = 0;
 
     while((c = getchar()) != EOF){
         if(isdigit(c) || c == '.'){
+            // increase num_ttl
+            num_ttl++;
+            if(c != '.' && c != '0'){
+                num_given++;
+            }
+
+            if(num_ttl > dim * dim){
+                fprintf(stderr, "Input number of numbers exceeds the required amount.\n");
+                exit(3);
+            }    
+
             // '.' is specific to our design of blank grid
             c_number = c == '.' ? 0 : c - '0';
             
@@ -61,6 +102,16 @@ sudoku_t *read(bool difficult)
                 col = 0;
             }
         }
+    }
+
+    if(!difficult && num_given != 37){
+        fprintf(stderr, "37 numbers should be provided for easy mode. You gave %d numbers. \n", num_ttl);
+        exit(4);
+    }
+
+    if(difficult && num_given != 25){
+        fprintf(stderr, "25 numbers should be provided for easy mode. You gave %d numbers. \n", num_ttl);
+        exit(4);
     }
 
     return sudoku;
