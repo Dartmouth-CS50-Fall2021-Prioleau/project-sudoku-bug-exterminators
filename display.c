@@ -58,7 +58,7 @@
 static void pborder(int dim)
 {
   // Loop through the boxes.
-  int dash = 7;
+  int dash = dim == 16 ? 13 : 7;
   for (int i = 0; i < sqrt(dim); i++) {
     printf("+");
     for (int j = 0; j < dash; j++) {
@@ -100,9 +100,9 @@ void display(sudoku_t *puzzle)
     printf("| ");
     for (int j = 0; j < puzzle->dim; j++) {
       if (puzzle->board[i][j]->num != 0)
-        printf("%d", puzzle->board[i][j]->num); 
+        printf("%2d", puzzle->board[i][j]->num); 
       else 
-        printf(".");
+        printf(" .");
       if ((j + 1) % box_size == 0)
         printf(" | ");
       else
@@ -150,7 +150,7 @@ void sdisplay(sudoku_t *puzzle)
  */
 #ifdef UNIT_TEST
 #include<stdlib.h>
-#define SIZE 9
+#define SIZE 16 
 
 void test_invalids_simple(void);
 void test_invalids_pretty(void);
@@ -222,14 +222,13 @@ void test_simple_pretty(void)
     }
   }
   display(s);
-  for (int i = 0; i < 9; i++) { 
-    for (int j = 0; j < 9; j++)
+  for (int i = 0; i < SIZE; i++) { 
+    for (int j = 0; j < SIZE; j++)
       free(s->board[i][j]);
     free(s->board[i]);
   }
   free(s->board);
   free(s);
-
 }
 
 #endif
