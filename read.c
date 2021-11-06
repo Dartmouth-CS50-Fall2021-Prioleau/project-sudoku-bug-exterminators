@@ -23,7 +23,7 @@
  *
  * (inputs): A boolean value indicates if it is a difficult mode
  *
- * (outputs): The function will not return a pointer to sudoku.
+ * (outputs): The function will return a pointer to sudoku.
  * 
  * (Support): Right now, the read function onlu support read numbers 
  *            from 0 to 9
