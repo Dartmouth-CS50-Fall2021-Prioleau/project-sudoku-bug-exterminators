@@ -196,6 +196,7 @@ sudoku_t *sudoku_ini(bool difficult, sudoku_t* sudoku)
                 row[i] |= 1<<(num-1);
                 col[j] |= 1<<(num-1);
                 box[k] |= 1<<(num-1);
+
             }
         }
     }
@@ -294,11 +295,17 @@ char* binary_format(int n, int len)
 {   
 
     char* binary = malloc(sizeof(char) * len);
-    int k = 0;
-    for (unsigned i = (1 << (len - 1)); i > 0; i = i / 2) {
-        binary[k++] = (n & i) ? '1' : '0';
+    
+    // loop index
+    int idx = 0;
+
+    for (int i = (1 << (len - 1)); i > 0; i = i / 2) {
+        binary[idx] = (n & i) > 0 ? '1' : '0';
+        idx++;
     }
-    binary[k] = '\0';
+    binary[idx] = '\0';
+
+
     return binary;
 }
 
