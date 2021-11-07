@@ -38,8 +38,8 @@ bool solve_board(sudoku_t *puzzle)
     return false;
 
   dim = puzzle->dim; 
-  for (int i = dim - 1; i > 0; i--) {
-    for (int j = dim - 1; j > 0; j--) {
+  for (int i = dim - 1; i >= 0; i--) {
+    for (int j = dim - 1; j >= 0; j--) {
       // Check if the box has a number, if so move on.
       square = puzzle->board[i][j];
       if (square->num == 0) {
@@ -128,19 +128,88 @@ static void test_invalid_puzzle(void)
 
 static void test_solved_puzzle(void)
 {
+  int arr[9][9] = {
+    {4, 3, 5, 2, 6, 9, 7, 8, 1},
+    {6, 8, 2, 5, 7, 1, 4, 9, 3},
+    {1, 9, 7, 8, 3, 4, 5, 6, 2},
+    {8, 2, 6, 1, 9, 5, 3, 4, 7},
+    {3, 7, 4, 6, 8, 2, 9, 1, 5},
+    {9, 5, 1, 7, 4, 3, 6, 2, 8},
+    {5, 1, 9, 3, 2, 6, 8, 7, 4},
+    {2, 4, 8, 9, 5, 7, 1, 3, 6},
+    {7, 6, 3, 4, 1, 8, 2, 5, 9}
+  };
 
-
+  sudoku_t *board = malloc(sizeof(sudoku_t));
+  board->dim = 9;
+  board->board = calloc(9, sizeof(box_t *));
+  for (int i = 0; i < 9; i++) {
+    board->board[i] = calloc(9, sizeof(box_t *));
+    for (int j = 0; j < 9; j++) {
+      board->board[i][j] = malloc(sizeof(box_t));
+      board->board[i][j]->num = arr[i][j];
+    }
+  }
+  assert(solve_board(board));
+  display(board);
+  for (int i = 0; i < 9; i++) {
+    for (int j = 0; j < 9; j++)
+      free(board->board[i][j]);
+    free(board->board[i]);
+  }
+  free(board->board);
+  free(board);
 }
 
 static void test_one_empty(void)
 {
+  int arr[9][9] = {
+    {4, 3, 0, 2, 6, 9, 7, 8, 1},
+    {6, 8, 2, 5, 7, 1, 4, 9, 3},
+    {1, 9, 7, 8, 3, 4, 5, 6, 2},
+    {8, 2, 6, 1, 9, 5, 3, 4, 7},
+    {3, 7, 4, 6, 8, 2, 9, 1, 5},
+    {9, 5, 1, 7, 4, 3, 6, 2, 8},
+    {5, 1, 9, 3, 2, 6, 8, 7, 4},
+    {2, 4, 8, 9, 5, 7, 1, 3, 6},
+    {7, 6, 3, 4, 1, 8, 2, 5, 9}
+  };
 
-
+  sudoku_t *board = malloc(sizeof(sudoku_t));
+  board->rows = calloc(9, sizeof(int));
+  board->columns = calloc(9, sizeof(int));
+  board->boxes = calloc(9, sizeof(int));
+  board->rows[0] = ~(1 << 4);
+  board->boxes[0] = ~(1 << 4);
+  board->columns[1] = ~(1 << 4);
+  board->dim = 9;
+  board->board = calloc(9, sizeof(box_t *));
+  for (int i = 0; i < 9; i++) {
+    board->board[i] = calloc(9, sizeof(box_t *));
+    for (int j = 0; j < 9; j++) {
+      board->board[i][j] = malloc(sizeof(box_t));
+      board->board[i][j]->num = arr[i][j];
+      if (i == 0 && j == 2)
+        board->board[i][j]->possible = 1 << 4;
+    }
+  }
+  assert(solve_board(board));
+  display(board);
+  for (int i = 0; i < 9; i++) {
+    for (int j = 0; j < 9; j++)
+      free(board->board[i][j]);
+    free(board->board[i]);
+  }
+  free(board->rows), free(board->columns), free(board->boxes);
+  free(board->board);
+  free(board);
 }
 
 static void test_simple_puzzle(void)
 {
+  int arr[9][9] = {
 
+  }
 
 }
 

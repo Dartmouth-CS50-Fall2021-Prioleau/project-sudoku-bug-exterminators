@@ -22,8 +22,8 @@ display_test: display.c display.h board.h
 solve.o: solve.c solve.h board.h
 	$(CC) $(CFLAGS) -c solve.c
 
-solve_test: solve.c solve.h board.h
-	$(CC) $(CFLAGS) -DUNIT_TEST solve.c -o solve_test
+solve_test: solve.c solve.h board.h display.o
+	$(CC) $(CFLAGS) -DUNIT_TEST solve.c display.o $(LIBS) -o solve_test
 
 test: 
 	./testing.sh &> testing.out

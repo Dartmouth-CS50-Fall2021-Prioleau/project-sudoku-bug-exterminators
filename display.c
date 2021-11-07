@@ -99,10 +99,17 @@ void display(sudoku_t *puzzle)
     }
     printf("| ");
     for (int j = 0; j < puzzle->dim; j++) {
-      if (puzzle->board[i][j]->num != 0)
-        printf("%2d", puzzle->board[i][j]->num); 
-      else 
-        printf(" .");
+      if (puzzle->board[i][j]->num != 0) {
+        if (puzzle->dim == 16)
+          printf("%2d", puzzle->board[i][j]->num); 
+        else
+          printf("%d", puzzle->board[i][j]->num); 
+      } else  {
+        if (puzzle->dim == 16)
+          printf(" .");
+        else 
+          printf(".");
+      }
       if ((j + 1) % box_size == 0)
         printf(" | ");
       else
