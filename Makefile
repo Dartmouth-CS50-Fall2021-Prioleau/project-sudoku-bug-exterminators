@@ -12,6 +12,8 @@ CC = gcc
 
 all: 
 
+read.o: 
+	$(CC) $(CFLAGS) -c read.c display.c
 
 display.o: display.c display.h board.h
 	$(CC) $(CFLAGS) -c display.c
