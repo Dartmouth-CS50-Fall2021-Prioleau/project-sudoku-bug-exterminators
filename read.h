@@ -15,6 +15,6 @@ sudoku_t *sudoku_ini(bool difficulty, sudoku_t* sudoku);
 int* array_create(int dim, sudoku_t* sudoku);
 int box_index(int row, int col, int dim);
 void delete_sudoku(sudoku_t* sudoku);
-char* toBinary(int n, int len);
+char* binary_format(int n, int len);
 
 #endif

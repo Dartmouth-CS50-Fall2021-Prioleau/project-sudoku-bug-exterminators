@@ -217,6 +217,7 @@ sudoku_t *sudoku_ini(bool difficult, sudoku_t* sudoku)
     return sudoku;
 }
 
+<<<<<<< HEAD
 /* (description): Calloc for an array of size passed in
  *
  * (inputs): dim - represent the size of the array
