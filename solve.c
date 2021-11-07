@@ -16,6 +16,8 @@
 static bool find_possible(sudoku_t *puzzle, box_t *square, 
                 int row, int col, int box); 
 
+static int *possible_number(int number, int dim); 
+
 /* (description): The `solve_board` function will sovle a given sudoku board, 
  * filling in the blanks with numbers that conform to the rules of sudoku.
  *
@@ -35,7 +37,7 @@ static bool find_possible(sudoku_t *puzzle, box_t *square,
 bool solve_board(sudoku_t *puzzle)
 {
   box_t *square;
-  int dim;
+  int dim, *possible, num, count = 0;
 
   if (puzzle == NULL || puzzle->board == NULL)
     return false;
@@ -53,29 +55,52 @@ bool solve_board(sudoku_t *puzzle)
         // printf("%d\n", square->possible);
         // printf("%s at %d %d\n", binary_format(square->possible, 9), i, j);
         // Loop through all possibilites, and try them.
-        for (int k = 0; k < dim; k++) {
-          if ((square->possible & (1 << k)) != 0) {
-            // printf("%d is possible at %d, %d.\n", k+1, i, j);
-            square->num = k + 1;
-            puzzle->rows[i] |= 1 << k;
-            puzzle->columns[j] |= 1 << k;
-            puzzle->boxes[box_index(i, j, dim)] |= 1 << k;
-            if (!solve_board(puzzle)) {
-              square->num = 0;
-              puzzle->rows[i] &= ~(1 << k);
-              puzzle->columns[j] &= ~(1 << k);
-              puzzle->boxes[box_index(i, j, dim)] &= ~(1 << k);
-            } else {
-              break;
-            }
-            // display(puzzle);
+        possible = possible_number(square->possible, dim); 
+        
+        while (possible[count++] != -1) {
+          num = possible[count-1];
+          square->num = num;
+          puzzle->rows[i] |= 1 << (num - 1);
+          puzzle->columns[j] |= 1 << (num - 1);
+          puzzle->boxes[box_index(i, j, dim)] |= 1 << (num - 1);
+          if (!solve_board(puzzle)) {
+            square->num = 0;
+            puzzle->rows[i] &= ~(1 << (num -1));
+            puzzle->columns[j] &= ~(1 << (num - 1));
+            puzzle->boxes[box_index(i, j, dim)] &= ~(1 << (num - 1));
+          } else {
+            break;
           }
         }
+        free(possible);
         return square->num != 0;
       }
     }
-  }
+  } 
   return true;
+}
+
+static int *possible_number(int number, int dim) {
+  int num = 0, a, b, temp;
+  int *numbers = calloc(dim + 1, sizeof(int));
+
+  // Place numbers into array in order.
+  for (int k = 0; k < dim; k++) {
+    if ((number & (1 << k)) != 0) {
+      numbers[num++] = k + 1; 
+    }
+  }
+  numbers[num] = -1;
+
+  // Randomize numbers.
+  for (int i = 0; i < num; i++) {
+    a = rand() % num;
+    b = rand() % num;
+    temp = numbers[a];
+    numbers[a] = numbers[b];
+    numbers[b] = temp;
+  }
+  return numbers;
 }
 
 /* (description): The `find_possbile` function finds the possibilities of a
@@ -127,10 +152,10 @@ static void test_hard_puzzle(void);
 
 int main(void)
 {
-  // test_invalid_puzzle();
-  // test_solved_puzzle();
-  // test_one_empty();
-  // test_simple_puzzle();
+  test_invalid_puzzle();
+  test_solved_puzzle();
+  test_one_empty();
+  test_simple_puzzle();
   test_hard_puzzle();
 }
 
