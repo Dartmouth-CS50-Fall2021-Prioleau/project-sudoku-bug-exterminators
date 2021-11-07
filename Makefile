@@ -12,7 +12,11 @@ CC = gcc
 
 all: 
 
+read.o: 
+	$(CC) $(CFLAGS) -c read.c display.c
 
+read_test: read.c read.h display.c
+	$(CC) $(CFLAGS) -DUNIT_TEST read.c display.c $(LIBS) -o read_test
 display.o: display.c display.h
 	$(CC) $(CFLAGS) -c display.c
 
