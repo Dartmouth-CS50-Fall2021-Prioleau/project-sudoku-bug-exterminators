@@ -242,7 +242,7 @@ int* array_create(int dim, sudoku_t* sudoku)
 int box_index(int row, int col, int dim)
 {
     int box_size = sqrt(dim);
-    return (row / box_size) + (col / box_size);
+    return (row / box_size) * box_size + (col / box_size);
 }
 
 void delete_sudoku(sudoku_t* sudoku)
@@ -317,7 +317,7 @@ char* binary_format(int n, int len)
 #ifdef UNIT_TEST
 
 int main(){
-    sudoku_t* puzzle = read(false);
+    sudoku_t* puzzle = read_sudoku(false);
     display(puzzle);
 }
 
