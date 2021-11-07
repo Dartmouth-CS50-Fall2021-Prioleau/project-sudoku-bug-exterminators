@@ -120,16 +120,18 @@ sudoku_t *read(bool difficult)
     }
 
     // checking the input number
-    /*
     if(!difficult && num_given != 37){
         fprintf(stderr, "37 numbers should be provided for easy mode. You gave %d numbers. \n", num_ttl);
+        delete_sudoku(sudoku);
         exit(4);
     }
 
     if(difficult && num_given != 25){
         fprintf(stderr, "25 numbers should be provided for easy mode. You gave %d numbers. \n", num_ttl);
+        delete_sudoku(sudoku);
         exit(4);
-    }*/
+    }
+    
     //return sudoku;
     return sudoku_ini(difficult, sudoku);
     
