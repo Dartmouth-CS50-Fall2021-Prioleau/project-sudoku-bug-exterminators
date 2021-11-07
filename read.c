@@ -32,7 +32,7 @@
  *
  */
 
-sudoku_t *read(bool difficult)
+sudoku_t *read_sudoku(bool difficult)
 {
     // create sudoku
     sudoku_t* sudoku = malloc(sizeof(sudoku_t));
