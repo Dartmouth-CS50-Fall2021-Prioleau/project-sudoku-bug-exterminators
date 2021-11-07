@@ -290,9 +290,10 @@ void delete_sudoku(sudoku_t* sudoku)
     }
 }
 
-char* toBinary(int n, int len)
-{
-    char* binary = (char*)malloc(sizeof(char) * len);
+char* binary_format(int n, int len)
+{   
+
+    char* binary = malloc(sizeof(char) * len);
     int k = 0;
     for (unsigned i = (1 << (len - 1)); i > 0; i = i / 2) {
         binary[k++] = (n & i) ? '1' : '0';
@@ -310,10 +311,12 @@ char* toBinary(int n, int len)
  **************************************************************************
  **************************************************************************
  */
-
+#ifdef UNIT_TEST
 
 int main(){
     sudoku_t* puzzle = read(false);
     display(puzzle);
 }
+
+#endif
 
