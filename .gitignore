@@ -5,3 +5,6 @@ solve_test
 
 # Vim Swap Files
 *.swp
+
+#executable 
+test

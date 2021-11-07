@@ -32,7 +32,7 @@
  *
  */
 
-sudoku_t *read(bool difficult)
+sudoku_t *read_sudoku(bool difficult)
 {
     // create sudoku
     sudoku_t* sudoku = malloc(sizeof(sudoku_t));
@@ -120,14 +120,8 @@ sudoku_t *read(bool difficult)
     }
 
     // checking the input number
-    if(!difficult && num_given != 37){
-        fprintf(stderr, "37 numbers should be provided for easy mode. You gave %d numbers. \n", num_ttl);
-        delete_sudoku(sudoku);
-        exit(4);
-    }
-
-    if(difficult && num_given != 25){
-        fprintf(stderr, "25 numbers should be provided for easy mode. You gave %d numbers. \n", num_ttl);
+    if(num_given < 25){
+        fprintf(stderr, "At least 25 numbers should be given.\n");
         delete_sudoku(sudoku);
         exit(4);
     }
@@ -217,7 +211,6 @@ sudoku_t *sudoku_ini(bool difficult, sudoku_t* sudoku)
     return sudoku;
 }
 
-<<<<<<< HEAD
 /* (description): Calloc for an array of size passed in
  *
  * (inputs): dim - represent the size of the array

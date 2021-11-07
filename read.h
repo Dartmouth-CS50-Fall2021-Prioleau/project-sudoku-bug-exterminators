@@ -10,7 +10,7 @@
 #include "board.h"
 #include <stdbool.h>
 
-sudoku_t *read(bool difficult);
+sudoku_t *read_sudoku(bool difficult);
 sudoku_t *sudoku_ini(bool difficulty, sudoku_t* sudoku);
 int* array_create(int dim, sudoku_t* sudoku);
 int box_index(int row, int col, int dim);
