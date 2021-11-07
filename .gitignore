@@ -2,6 +2,7 @@
 *.x *.o
 display_test
 solve_test
+create_test
 
 # Vim Swap Files
 *.swp
