@@ -125,6 +125,12 @@ sudoku_t *read(bool difficult)
     return sudoku;
 }
 
+bool delete_sudoku(sudoku_t *board)
+{
+
+
+}
+
 int main(){
     sudoku_t* puzzle = read(false);
     display(puzzle);
