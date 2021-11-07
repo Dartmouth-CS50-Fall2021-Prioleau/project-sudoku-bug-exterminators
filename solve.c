@@ -1,7 +1,10 @@
 #include<stdlib.h>
 #include<stdio.h>
+#include<math.h>
 #include "board.h"
+#include "display.h"
 #include "solve.h"
+#include "read.h"
 
 /* Alan Sun, Arden Guo
  * CS50, Fall 2021, Sudoku Project
@@ -43,20 +46,32 @@ bool solve_board(sudoku_t *puzzle)
       // Check if the box has a number, if so move on.
       square = puzzle->board[i][j];
       if (square->num == 0) {
-        if (!find_possible(puzzle, square, i, j, (i % dim) + (j % dim)))
+        if (!find_possible(puzzle, square, i, j, box_index(i, j, dim))) {
           return false;
+        }
+
+        // printf("%d\n", square->possible);
+        // printf("%s at %d %d\n", binary_format(square->possible, 9), i, j);
         // Loop through all possibilites, and try them.
         for (int k = 0; k < dim; k++) {
           if ((square->possible & (1 << k)) != 0) {
+            // printf("%d is possible at %d, %d.\n", k+1, i, j);
             square->num = k + 1;
-            puzzle->rows[i] &= ~(1 << k);
-            puzzle->columns[j] &= ~(1 << k);
-            puzzle->boxes[(i % dim) + (j % dim)] &= ~(1 << k);
-            if (solve_board(puzzle))
-              return true;
+            puzzle->rows[i] |= 1 << k;
+            puzzle->columns[j] |= 1 << k;
+            puzzle->boxes[box_index(i, j, dim)] |= 1 << k;
+            if (!solve_board(puzzle)) {
+              square->num = 0;
+              puzzle->rows[i] &= ~(1 << k);
+              puzzle->columns[j] &= ~(1 << k);
+              puzzle->boxes[box_index(i, j, dim)] &= ~(1 << k);
+            } else {
+              break;
+            }
+            // display(puzzle);
           }
         }
-        
+        return square->num != 0;
       }
     }
   }
@@ -83,6 +98,7 @@ static bool find_possible(sudoku_t *puzzle, box_t *square,
   }
   square->possible = ~(puzzle->rows[row] | puzzle->columns[col] | 
                           puzzle->boxes[box]);
+  square->possible &= (int) pow(2, puzzle->dim) - 1;
   return square->possible != 0;
 }
 
@@ -96,9 +112,12 @@ static bool find_possible(sudoku_t *puzzle, box_t *square,
  */
 #ifdef UNIT_TEST
 #include<stdio.h>
+#include<unistd.h>
 #include<stdlib.h>
 #include "display.h"
 #include "assert.h"
+#include<fcntl.h>
+#include "read.h"
 
 static void test_invalid_puzzle(void);
 static void test_solved_puzzle(void);
@@ -108,10 +127,10 @@ static void test_hard_puzzle(void);
 
 int main(void)
 {
-  test_invalid_puzzle();
-  test_solved_puzzle();
-  test_one_empty();
-  test_simple_puzzle();
+  // test_invalid_puzzle();
+  // test_solved_puzzle();
+  // test_one_empty();
+  // test_simple_puzzle();
   test_hard_puzzle();
 }
 
@@ -207,16 +226,24 @@ static void test_one_empty(void)
 
 static void test_simple_puzzle(void)
 {
-  int arr[9][9] = {
-
-  }
-
+  int fd = open("p1", O_RDONLY);
+  dup2(fd, STDIN_FILENO);
+  sudoku_t *board = read_sudoku(false);
+  display(board);
+  assert(solve_board(board));
+  display(board);
+  delete_sudoku(board);
 }
 
 static void test_hard_puzzle(void)
 {
-
-
+  int fd = open("p2", O_RDONLY);
+  dup2(fd, STDIN_FILENO);
+  sudoku_t *board = read_sudoku(false);
+  display(board);
+  assert(solve_board(board));
+  display(board);
+  delete_sudoku(board);
 }
 
 #endif

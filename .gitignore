@@ -1,6 +1,7 @@
 # Executables and Object Files
 *.x *.o
 display_test
+solve_test
 
 # Vim Swap Files
 *.swp
