@@ -96,9 +96,12 @@ static bool find_possible(sudoku_t *puzzle, box_t *square,
  */
 #ifdef UNIT_TEST
 #include<stdio.h>
+#include<unistd.h>
 #include<stdlib.h>
 #include "display.h"
 #include "assert.h"
+#include<fcntl.h>
+#include "read.h"
 
 static void test_invalid_puzzle(void);
 static void test_solved_puzzle(void);
@@ -207,10 +210,10 @@ static void test_one_empty(void)
 
 static void test_simple_puzzle(void)
 {
-  int arr[9][9] = {
-
-  }
-
+  int fd = open("p1", O_RDONLY);
+  dup2(fd, STDIN_FILENO);
+  sudoku_t *board = read_sudoku(false);
+  display(board);
 }
 
 static void test_hard_puzzle(void)
