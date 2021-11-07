@@ -13,11 +13,17 @@ CC = gcc
 all: 
 
 
-display.o: display.c display.h
+display.o: display.c display.h board.h
 	$(CC) $(CFLAGS) -c display.c
 
-display_test: display.c display.h
+display_test: display.c display.h board.h
 	$(CC) $(CFLAGS) -DUNIT_TEST display.c $(LIBS) -o display_test
+
+solve.o: solve.c solve.h board.h
+	$(CC) $(CFLAGS) -c solve.c
+
+solve_test: solve.c solve.h board.h
+	$(CC) $(CFLAGS) -DUNIT_TEST solve.c -o solve_test
 
 test: 
 	./testing.sh &> testing.out

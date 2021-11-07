@@ -1,5 +1,6 @@
 #include<stdlib.h>
 #include<stdio.h>
+#include "board.h"
 #include "solve.h"
 
 /* Alan Sun, Arden Guo
@@ -46,7 +47,7 @@ bool solve_board(sudoku_t *puzzle)
           return false;
         // Loop through all possibilites, and try them.
         for (int k = 0; k < dim; k++) {
-          if (square->possible & (1 << k) != 0) {
+          if ((square->possible & (1 << k)) != 0) {
             square->num = k + 1;
             puzzle->rows[i] &= ~(1 << k);
             puzzle->columns[j] &= ~(1 << k);
@@ -96,6 +97,8 @@ static bool find_possible(sudoku_t *puzzle, box_t *square,
 #ifdef UNIT_TEST
 #include<stdio.h>
 #include<stdlib.h>
+#include "display.h"
+#include "assert.h"
 
 static void test_invalid_puzzle(void);
 static void test_solved_puzzle(void);
@@ -105,11 +108,46 @@ static void test_hard_puzzle(void);
 
 int main(void)
 {
-  test_invalid_puzzle(void);
-  test_solved_puzzle(void);
-  test_one_empty(void);
-  test_simple_puzzle(void);
-  test_hard_puzzle(void);
+  test_invalid_puzzle();
+  test_solved_puzzle();
+  test_one_empty();
+  test_simple_puzzle();
+  test_hard_puzzle();
+}
+
+static void test_invalid_puzzle(void)
+{
+  sudoku_t *board;
+
+  assert(!solve_board(NULL)); 
+  board = malloc(sizeof(sudoku_t));
+  board->board = NULL;
+  assert(!solve_board(board));
+  free(board);
+} 
+
+static void test_solved_puzzle(void)
+{
+
+
+}
+
+static void test_one_empty(void)
+{
+
+
+}
+
+static void test_simple_puzzle(void)
+{
+
+
+}
+
+static void test_hard_puzzle(void)
+{
+
+
 }
 
 #endif
