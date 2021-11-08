@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 #include <stdbool.h>
 #include "create.h"
 #include "solve.h"
@@ -11,7 +12,7 @@
 int main(const int argv, char* argc[]){
     // get the program
     char* program = argc[0];
-
+    srand(time(NULL));
     // check the number of arguments
     if(argv != 3){
         fprintf(stderr, "Usage: %s mode difficulty\n", program);

@@ -1,5 +1,6 @@
 #include<math.h>
 #include<stdlib.h>
+#include<time.h>
 #include "board.h"
 #include "solve.h"
 #include "create.h"

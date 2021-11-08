@@ -1,5 +1,6 @@
 # Executables and Object Files
-*.x *.o
+*.x 
+*.o
 display_test
 solve_test
 create_test
