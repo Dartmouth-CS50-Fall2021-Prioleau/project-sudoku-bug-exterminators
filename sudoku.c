@@ -37,7 +37,13 @@ int main(const int argv, char* argc[]){
     int dim = 9;
     if(strcmp(mode,"create")==0){
         // creator
-        create(difficult, dim);
+        sudoku_t* sudoku = create(difficult, dim);
+	if(sudoku == NULL){
+	    fprintf(stderr, "Failed to create a sudoku.\n");
+	    return 1;
+	}
+	display(sudoku);
+
     }else{
         // solver
         sudoku_t* sudoku = read_sudoku(false); // TODO: need to corresponds the param to the dim
