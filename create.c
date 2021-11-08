@@ -5,6 +5,8 @@
 #include "solve.h"
 #include "create.h"
 #include "read.h"
+#include <sys/time.h>
+#include <time.h>
 /* Alan Sun, Arden Guo
  * CS50, Fall 2021, Sudoku Project
  * Create sudoku (create.c)
@@ -15,7 +17,10 @@
 static sudoku_t *empty(int dim);
 
 sudoku_t *create(bool difficult, int dim)
-{
+{ 
+  struct timeval current_time;
+  gettimeofday(&current_time, NULL);
+  srand(current_time.tv_usec);
   sudoku_t *puzzle = empty(dim);
   int *nums = calloc(dim * dim, sizeof(int));
   int a, b, temp;
