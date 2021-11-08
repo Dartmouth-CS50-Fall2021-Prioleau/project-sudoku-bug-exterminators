@@ -6,6 +6,7 @@
 #include "solve.h"
 #include "board.h"
 #include "read.h"
+#include "display.h"
 
 int main(const int argv, char* argc[]){
     // get the program
@@ -45,6 +46,7 @@ int main(const int argv, char* argc[]){
             return 1;
         }
         solve_board(sudoku);
+	display(sudoku);
     }
 
     return 0;
