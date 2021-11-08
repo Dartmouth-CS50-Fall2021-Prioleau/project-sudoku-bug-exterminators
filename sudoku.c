@@ -44,6 +44,8 @@ int main(const int argv, char* argc[]){
 	}
 	display(sudoku);
 
+	// clear the memory
+	delete_sudoku(sudoku);
     }else{
         // solver
         sudoku_t* sudoku = read_sudoku(false); // TODO: need to corresponds the param to the dim
@@ -53,6 +55,9 @@ int main(const int argv, char* argc[]){
         }
         solve_board(sudoku);
 	display(sudoku);
+
+	// clear the memory
+	delete_sudoku(sudoku);
     }
 
     return 0;
