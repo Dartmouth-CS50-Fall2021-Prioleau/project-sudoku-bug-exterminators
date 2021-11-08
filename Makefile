@@ -16,13 +16,14 @@ all: $(PROG)
 $(PROG): $(OBJS) 
 	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(PROG)
 
-sudoku.o: create.h solve.h read.h board.h
+sudoku.o: create.h solve.h read.h display.h board.h
+#	$(CC) $(CFLAGS) -c sudoku.c
 
 create_test: create.c solve.o board.h display.o read.o
 	$(CC) $(CFLAGS) -DUNIT_TEST create.c read.o \
 					display.o solve.o $(LIBS) -o create_test
 
-create.o: create.c board.h solve.h read.h create.h
+create.o: create.c board.h solve.h read.h display.h create.h
 	$(CC) $(CFLAGS) -c create.c
 
 read.o: read.c read.h 
