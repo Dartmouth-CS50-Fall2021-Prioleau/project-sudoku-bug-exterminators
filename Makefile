@@ -7,10 +7,16 @@
 CFLAGS = -Wall -pedantic -std=c11 -ggdb 
 LIBS = -lm
 CC = gcc
+PROG = sudoku
+OBJS = sudoku.o create.o solve.o read.o display.o
 
 .PHONY: clean 
 
-all: 
+all: $(PROG)
+$(PROG): $(OBJS) 
+	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(PROG)
+
+sudoku.o: create.h solve.h read.h board.h
 
 create_test: create.c solve.o board.h display.o read.o
 	$(CC) $(CFLAGS) -DUNIT_TEST create.c read.o \
@@ -30,9 +36,6 @@ display_test: display.c display.h board.h
 
 solve.o: solve.c solve.h board.h
 	$(CC) $(CFLAGS) -c solve.c
-
-read.o: read.c read.h
-	$(CC) $(CFLAGS) -c read.c
 
 solve_test: solve.c solve.h board.h display.o read.h
 	$(CC) $(CFLAGS) -DUNIT_TEST solve.c read.o display.o $(LIBS) -o solve_test
