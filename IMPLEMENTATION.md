@@ -82,6 +82,10 @@ typdef struct sudoku {
 - Display sodoku
 	- Params: the board
 
+- Creator
+	- some thoughts now: modify the backtracking method to count the total number of solutions for the puzzle.
+	- then can check if the numnber of solutions equals to 1 for uniqueness.
+	
 				
 		
 
