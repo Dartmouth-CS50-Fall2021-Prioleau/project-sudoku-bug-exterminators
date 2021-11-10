@@ -10,6 +10,8 @@
 #include<stdbool.h>
 #include "board.h"
 
+
 bool solve_board(sudoku_t *board, bool check_unique);
+
 
 #endif

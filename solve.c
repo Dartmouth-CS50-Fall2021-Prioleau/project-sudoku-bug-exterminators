@@ -18,8 +18,16 @@ static bool find_possible(sudoku_t *puzzle, box_t *square,
 
 static int *possible_number(int number, int dim); 
 
+
+box_t*** blank_grids(sudoku_t* puzzle);
+
+int num_of_possible(box_t* square, sudoku_t* puzzle, int row, int col, int box);
+
+void delete_blank_box(box_t*** blank_box, int dim);
+
 static void set_square(sudoku_t *, box_t *, int num, int i, int j);
 static void unset_square(sudoku_t *, box_t *, int num, int i, int j);
+
 
 /* (description): The `solve_board` function will sovle a given sudoku board, 
  * filling in the blanks with numbers that conform to the rules of sudoku.
@@ -145,6 +153,95 @@ static bool find_possible(sudoku_t *puzzle, box_t *square,
                           puzzle->boxes[box]);
   square->possible &= (int) pow(2, puzzle->dim) - 1;
   return square->possible != 0;
+}
+
+/**/
+box_t*** blank_grids(sudoku_t* puzzle)
+{
+  // get dimmension
+  int dim = puzzle->dim;
+  //printf("Initializing blank grids data structures ... \n"); 
+  // initialize the data structures
+  box_t*** blank_box = malloc(dim * sizeof(box_t**));
+  if(blank_box == NULL){
+    fprintf(stderr, "Failed to malloc for array\n");
+    // delete before exiting
+    delete_sudoku(puzzle);
+    exit(2);
+  }
+ 
+  for(int i=0; i<dim; i++){
+    blank_box[i] = calloc(dim*dim, sizeof(box_t*));
+    if(blank_box[i] == NULL){
+      //fprintf(stderr, "Failed to malloc for array\n");
+      //delete the blank box 
+      delete_blank_box(blank_box, dim);
+      
+      // delete before exiting
+      delete_sudoku(puzzle);
+      
+      exit(2);
+    }
+  }
+  //printf("initialize index ...\n");
+  // index to store the box_t*
+  int index[dim];
+  for(int i=0; i<dim; i++){
+    index[i] = 0;
+  }
+  
+  //int ttl = 0;
+  //printf("Loop through the puzzle to store the blank grids ... \n");
+
+  for(int i=0; i<dim; i++){
+    for(int j=0; j<dim; j++){
+      //printf("i and j = %d, %d\n", i, j);
+      box_t* current_box = puzzle->board[i][j];
+      if(current_box->num == 0){
+        //ttl++;
+	//printf("find a blank grid\n");
+        // calculate the number of possibilities for this grid
+        int count = num_of_possible(current_box, puzzle, i, j, box_index(i,j,dim));
+        //printf("%d , ", count);
+        // insert the current box to the right place
+        blank_box[count - 1][(index[count - 1])++] = current_box;
+      }
+    }
+  }
+
+  //printf("\nThere is a total of %d blank grids\n", ttl);
+  return blank_box;
+}
+
+int num_of_possible(box_t* square, sudoku_t* puzzle, int row, int col, int box)
+{
+  //printf("Get the number of possible numbers ... \n");
+  // get the possible number
+  square->possible = ~(puzzle->rows[row] | puzzle->columns[col] | 
+                          puzzle->boxes[box]);
+  square->possible &= (int) pow(2, puzzle->dim) - 1;
+  //printf("binary format is %s\n",binary_format(square->possible, 9));
+  // count the number of 1s in the possible
+  int count = 0;
+  int dim = puzzle->dim;
+  for (int k = 0; k < dim; k++) {
+    if ((square->possible & (1 << k)) != 0) {
+      count++;
+    }
+  }
+
+  return count;
+}
+
+void delete_blank_box(box_t*** blank_box, int dim)
+{
+  for(int i=0; i <dim; i++){
+    if(blank_box[i] != NULL){
+      free(blank_box[i]);
+    }
+  }
+
+  free(blank_box);
 }
 
 /***************************************************************************

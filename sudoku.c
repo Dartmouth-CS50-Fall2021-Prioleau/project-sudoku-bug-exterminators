@@ -45,6 +45,9 @@ int main(const int argv, char* argc[]){
 	}
 	display(sudoku);
 
+    //printf("\n Testing the blank grids...\n");
+    //blank_grids(sudoku);
+
 	// clear the memory
 	delete_sudoku(sudoku);
     }else{
@@ -54,7 +57,14 @@ int main(const int argv, char* argc[]){
             fprintf(stderr, "Failed to read from sudoku.\n");
             return 1;
         }
+
+	//display(sudoku);
+	//printf("Testing blank grids here ... \n");
+	//blank_grids(sudoku);
+
+
         solve_board(sudoku, false);
+
 	display(sudoku);
 
 	// clear the memory
