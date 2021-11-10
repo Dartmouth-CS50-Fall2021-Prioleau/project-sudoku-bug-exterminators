@@ -121,9 +121,9 @@ sudoku_t *read_sudoku(bool difficult)
 
     // checking the input number
     if(num_given < 25){
-        fprintf(stderr, "At least 25 numbers should be given.\n");
-        delete_sudoku(sudoku);
-        exit(4);
+       fprintf(stderr, "At least 25 numbers should be given.\n");
+       delete_sudoku(sudoku);
+       exit(4);
     }
     
     //return sudoku;
