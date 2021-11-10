@@ -19,7 +19,7 @@ $(PROG): $(OBJS)
 sudoku.o: create.h solve.h read.h display.h board.h
 #	$(CC) $(CFLAGS) -c sudoku.c
 
-create_test: create.c solve.o board.h display.o read.o
+create_test: create.c solve.o board.h display.o read.o read.h
 	$(CC) $(CFLAGS) -DUNIT_TEST create.c read.o \
 					display.o solve.o $(LIBS) -o create_test
 
@@ -38,7 +38,7 @@ display_test: display.c display.h board.h
 solve.o: solve.c solve.h board.h
 	$(CC) $(CFLAGS) -c solve.c
 
-solve_test: solve.c solve.h board.h display.o read.h
+solve_test: solve.c solve.h board.h display.o read.h read.o
 	$(CC) $(CFLAGS) -DUNIT_TEST solve.c read.o display.o $(LIBS) -o solve_test
 
 test: 

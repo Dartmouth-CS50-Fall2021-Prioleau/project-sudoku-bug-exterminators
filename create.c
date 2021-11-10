@@ -25,7 +25,7 @@ sudoku_t *create(bool difficult, int dim)
   int *nums = calloc(dim * dim, sizeof(int));
   int a, b, temp;
 
-  solve_board(puzzle);
+  solve_board(puzzle, false);
   // Remove numbers from the solved sudoku board.
   for (int i = 0; i < dim * dim; i++)
     nums[i] = i;
