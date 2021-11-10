@@ -18,6 +18,12 @@ static bool find_possible(sudoku_t *puzzle, box_t *square,
 
 static int *possible_number(int number, int dim); 
 
+box_t*** blank_grids(sudoku_t* puzzle);
+
+int num_of_possible(box_t* square, sudoku_t* puzzle, int row, int col, int box);
+
+void delete_blank_box(box_t*** blank_box, int dim);
+
 /* (description): The `solve_board` function will sovle a given sudoku board, 
  * filling in the blanks with numbers that conform to the rules of sudoku.
  *
@@ -125,6 +131,87 @@ static bool find_possible(sudoku_t *puzzle, box_t *square,
                           puzzle->boxes[box]);
   square->possible &= (int) pow(2, puzzle->dim) - 1;
   return square->possible != 0;
+}
+
+/**/
+box_t*** blank_grids(sudoku_t* puzzle)
+{
+  // get dimmension
+  int dim = puzzle->dim;
+  
+  // initialize the data structures
+  box_t*** blank_box = malloc(dim * sizeof(box_t**));
+  if(blank_box == NULL){
+    fprintf(stderr, "Failed to malloc for array\n");
+    // delete before exiting
+    delete_sudoku(puzzle);
+    exit(2);
+  }
+
+  for(int i=0; i<dim; i++){
+    blank_box[i] = calloc(dim*dim, sizeof(box_t*));
+    if(blank_box[i] == NULL){
+      fprintf(stderr, "Failed to malloc for array\n");
+      //delete the blank box 
+      delete_blank_box(blank_box, dim);
+      
+      // delete before exiting
+      delete_sudoku(puzzle);
+      
+      exit(2);
+    }
+  }
+  
+  // index to store the box_t*
+  int index[dim];
+  for(int i=0; i<dim; i++){
+    index[i] = 0;
+  }
+  
+  for(int i=0; i<dim; i++){
+    for(int j=0; j<dim; j++){
+      box_t* current_box = puzzle->board[i][j];
+      if(current_box->num == 0){
+        // calculate the number of possibilities for this grid
+        int count = num_of_possible(current_box, puzzle, i, j, box_index(i,j,dim));
+
+        // insert the current box to the right place
+        blank_box[count - 1][(index[count - 1])++] = current_box;
+      }
+    }
+  }
+
+  return blank_box;
+}
+
+int num_of_possible(box_t* square, sudoku_t* puzzle, int row, int col, int box)
+{
+  // get the possible number
+  square->possible = ~(puzzle->rows[row] | puzzle->columns[col] | 
+                          puzzle->boxes[box]);
+  square->possible &= (int) pow(2, puzzle->dim) - 1;
+
+  // count the number of 1s in the possible
+  int count = 0;
+  int dim = puzzle->dim;
+  for (int k = 0; k < dim; k++) {
+    if ((square->possible & (1 << k)) != 0) {
+      count++;
+    }
+  }
+
+  return count;
+}
+
+void delete_blank_box(box_t*** blank_box, int dim)
+{
+  for(int i=0; i <dim; i++){
+    if(blank_box[i] != NULL){
+      free(blank_box[i]);
+    }
+  }
+
+  free(blank_box);
 }
 
 /***************************************************************************
