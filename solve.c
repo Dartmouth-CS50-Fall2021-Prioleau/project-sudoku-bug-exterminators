@@ -168,19 +168,24 @@ box_t*** blank_grids(sudoku_t* puzzle)
     index[i] = 0;
   }
   
+  int ttl = 0;
+
   for(int i=0; i<dim; i++){
     for(int j=0; j<dim; j++){
       box_t* current_box = puzzle->board[i][j];
       if(current_box->num == 0){
+        ttl++;
+
         // calculate the number of possibilities for this grid
         int count = num_of_possible(current_box, puzzle, i, j, box_index(i,j,dim));
-
+        printf("%d , ", count);
         // insert the current box to the right place
         blank_box[count - 1][(index[count - 1])++] = current_box;
       }
     }
   }
 
+  printf("\nThere is a total of %d blank grids\n", ttl);
   return blank_box;
 }
 
