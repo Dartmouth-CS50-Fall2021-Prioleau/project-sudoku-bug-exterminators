@@ -11,5 +11,6 @@
 #include "board.h"
 
 bool solve_board(sudoku_t *board);
+box_t*** blank_grids(sudoku_t* puzzle);
 
 #endif
