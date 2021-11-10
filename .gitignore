@@ -4,9 +4,14 @@
 display_test
 solve_test
 create_test
+sudoku
 
 # Vim Swap Files
 *.swp
 
 #executable 
 test
+read
+
+# Testing
+testing.out

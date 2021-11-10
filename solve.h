@@ -10,7 +10,8 @@
 #include<stdbool.h>
 #include "board.h"
 
-bool solve_board(sudoku_t *board);
-box_t*** blank_grids(sudoku_t* puzzle);
+
+bool solve_board(sudoku_t *board, bool check_unique);
+
 
 #endif
