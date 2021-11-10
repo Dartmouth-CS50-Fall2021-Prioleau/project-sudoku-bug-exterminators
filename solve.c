@@ -133,7 +133,15 @@ static bool find_possible(sudoku_t *puzzle, box_t *square,
   return square->possible != 0;
 }
 
-/**/
+/*
+ * (description): The `blank_grids` function loops through the puzzle and 
+ * store the blank grids into a new 2D array.
+ *
+ * (input): A sudoku puzzle contains the board is passed in.
+ * 
+ * (output): A 2D array with row index i indicating there are i+1 pissibilities 
+ * for the grids stored in this row. 
+ */
 box_t*** blank_grids(sudoku_t* puzzle)
 {
   // get dimmension
@@ -191,6 +199,18 @@ box_t*** blank_grids(sudoku_t* puzzle)
   return blank_box;
 }
 
+/*
+ * (description): The `num_of_possible` function calculates the number of possiblities
+ * for a grid.
+ *
+ * (input): square - the grid 
+ *	    puzzle - the sudoku puzzle
+ *	    row - the row index of the grid
+ *	    col - the column index of the grid
+ * 	    box - the box index of the grid
+ *
+ * (output): The numebr of possibilities for the grid.
+ */
 int num_of_possible(box_t* square, sudoku_t* puzzle, int row, int col, int box)
 {
   //printf("Get the number of possible numbers ... \n");
@@ -211,6 +231,13 @@ int num_of_possible(box_t* square, sudoku_t* puzzle, int row, int col, int box)
   return count;
 }
 
+/*
+ * (description): The function `delete_blank_box` frees the memory allocated
+ * by the blank_grid function.
+ * 
+ * (input): blank_box - the 2D array allocated by the dynamic memory allocator
+ *  	    dim - the dimmension size of the sudoku puzzle
+ */
 void delete_blank_box(box_t*** blank_box, int dim)
 {
   for(int i=0; i <dim; i++){
