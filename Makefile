@@ -51,3 +51,4 @@ clean:
 	rm -rf testing.out
 	rm -rf $$(ls | grep "^test[0-9]*$$" | tr "\n" " ") 
 	rm -rf *.x *.o
+	rm -f sudoku create_test display_test test solve_test read
