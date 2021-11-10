@@ -45,6 +45,9 @@ int main(const int argv, char* argc[]){
 	}
 	display(sudoku);
 
+    printf("\n Testing the blank grids...\n");
+    blank_grids(sudoku);
+
 	// clear the memory
 	delete_sudoku(sudoku);
     }else{
