@@ -11,6 +11,7 @@ sudoku
 
 #executable 
 test
+read
 
 # Testing
 testing.out
