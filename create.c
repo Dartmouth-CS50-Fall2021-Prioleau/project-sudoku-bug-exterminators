@@ -5,8 +5,9 @@
 #include "solve.h"
 #include "create.h"
 #include "read.h"
-#include <sys/time.h>
-#include <time.h>
+#include<stdbool.h>
+#include<sys/time.h>
+#include<time.h>
 /* Alan Sun, Arden Guo
  * CS50, Fall 2021, Sudoku Project
  * Create sudoku (create.c)
@@ -15,6 +16,8 @@
  */
 
 static sudoku_t *empty(int dim);
+static bool pluck(sudoku_t *puzzle, int *coor, bool difficulty);
+static int *random_remove(int dim);
 
 sudoku_t *create(bool difficult, int dim)
 { 
@@ -22,10 +25,26 @@ sudoku_t *create(bool difficult, int dim)
   gettimeofday(&current_time, NULL);
   srand(current_time.tv_usec);
   sudoku_t *puzzle = empty(dim);
+  int *nums;
+
+  solve_board(puzzle);
+  nums = random_remove(dim);
+
+  // Index map from the ordinal numbers to coordinates that are 
+  // to be removed from the solved sudoku board.
+  while (!pluck(puzzle, nums, difficult)) {
+    puzzle = empty(dim);
+    nums = random_remove(dim);
+  }
+  free(nums);
+  return puzzle;
+}
+
+static int *random_remove(int dim)
+{
   int *nums = calloc(dim * dim, sizeof(int));
   int a, b, temp;
-
-  solve_board(puzzle, false);
+  
   // Remove numbers from the solved sudoku board.
   for (int i = 0; i < dim * dim; i++)
     nums[i] = i;
@@ -37,15 +56,32 @@ sudoku_t *create(bool difficult, int dim)
     nums[a] = nums[b];
     nums[b] = temp;
   }
+  return nums;
+}
 
-  // Index map from the ordinal numbers to coordinates that are 
-  // to be removed from the solved sudoku board.
-  for (int i = 0; i < (difficult ? 56 : 44); i++) {
-    temp = nums[i];
-    puzzle->board[temp / 9][temp % 9]->num = 0;
+static bool pluck(sudoku_t *puzzle, int *coor, bool difficulty)
+{
+  int temp, num;
+  box_t *square;
+  int count = 0;
+
+  for (int i = 0; count < (difficulty ? 56 : 44); i++) {
+    if (i >= 81)
+      return false;
+    temp = coor[i];
+    square = puzzle->board[temp / 9][temp % 9];
+    num = square->num;
+    // Set the possibilities to pre-set unique checking.
+    unset_square(puzzle, square, num, temp / 9, temp % 9);
+    // Check if board stil lhas unique solution.
+    if (is_unique(puzzle) == 1)
+      count++;
+    else {
+      square->num = num;
+      set_square(puzzle, square, num, temp / 9, temp % 9);
+    } 
   }
-  free(nums);
-  return puzzle;
+  return true;
 }
 
 static sudoku_t *empty(int dim)
@@ -78,6 +114,7 @@ static sudoku_t *empty(int dim)
  */
 #ifdef UNIT_TEST
 #include "display.h"
+#include<stdio.h>
 
 void test_simple(void);
 void test_hard(void);
@@ -86,10 +123,12 @@ int main(void)
 { 
   // Generate 3 simple sudoku.
   for (int i = 0; i < 3; i++) {
+    printf("Simple Puzzle:\n");
     test_simple();
   }
   // Generate 3 hard sudoku.
   for (int i = 0; i < 3; i++) {
+    printf("Hard Puzzle:\n");
     test_hard();
   }
 }
