@@ -10,8 +10,12 @@
 #include<stdbool.h>
 #include "board.h"
 
+bool solve_board(sudoku_t *board);
+int is_unique(sudoku_t *puzzle);
+void set_square(sudoku_t *, box_t *, int num, int i, int j);
+void unset_square(sudoku_t *, box_t *, int num, int i, int j);
 
-bool solve_board(sudoku_t *board, bool check_unique);
+
 
 
 #endif
