@@ -54,7 +54,7 @@ int main(const int argv, char* argc[]){
             fprintf(stderr, "Failed to read from sudoku.\n");
             return 1;
         }
-        solve_board(sudoku, false);
+        solve_board(sudoku);
 	display(sudoku);
 
 	// clear the memory
