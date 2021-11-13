@@ -27,7 +27,7 @@ sudoku_t *create(bool difficult, int dim)
   sudoku_t *puzzle = empty(dim);
   int *nums;
 
-  solve_board(puzzle);
+  solve_board(puzzle, true);
   nums = random_remove(dim);
 
   // Index map from the ordinal numbers to coordinates that are 
@@ -61,24 +61,27 @@ static int *random_remove(int dim)
 
 static bool pluck(sudoku_t *puzzle, int *coor, bool difficulty)
 {
-  int temp, num;
+  int temp, num, cols, rows;
   box_t *square;
   int count = 0;
+  int total = puzzle->dim * puzzle->dim;
+  int removed = difficulty ? 56 : 44;
 
-  for (int i = 0; count < (difficulty ? 56 : 44); i++) {
-    if (i >= 81)
+  for (int i = 0; count < removed; i++) {
+    if (i >= 81 || (total - i < removed - count))
       return false;
     temp = coor[i];
-    square = puzzle->board[temp / 9][temp % 9];
+    rows = temp / 9;
+    cols = temp % 9;
+    square = puzzle->board[rows][cols];
     num = square->num;
     // Set the possibilities to pre-set unique checking.
-    unset_square(puzzle, square, num, temp / 9, temp % 9);
+    unset_square(puzzle, square, num, rows, cols);
     // Check if board stil lhas unique solution.
     if (is_unique(puzzle) == 1)
       count++;
     else {
-      square->num = num;
-      set_square(puzzle, square, num, temp / 9, temp % 9);
+      set_square(puzzle, square, num, rows, cols);
     } 
   }
   return true;
