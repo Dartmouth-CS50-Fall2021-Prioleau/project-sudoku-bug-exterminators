@@ -1,4 +1,4 @@
-#include<stdlib.h>
+#include<stdlib.h> 
 #include<stdio.h>
 #include<math.h>
 #include "board.h"
@@ -16,7 +16,7 @@
 static bool find_possible(sudoku_t *puzzle, box_t *square, 
                 int row, int col, int box); 
 
-static int *possible_number(int number, int dim); 
+static int *possible_number(int number, int dim, bool random); 
 
 box_t*** blank_grids(sudoku_t* puzzle);
 
@@ -24,8 +24,8 @@ int num_of_possible(box_t* square, sudoku_t* puzzle, int row, int col, int box);
 
 void delete_blank_box(box_t*** blank_box, int dim);
 
-static void set_square(sudoku_t *, box_t *, int num, int i, int j);
-static void unset_square(sudoku_t *, box_t *, int num, int i, int j);
+void set_square(sudoku_t *, box_t *, int num, int i, int j);
+void unset_square(sudoku_t *, box_t *, int num, int i, int j);
 
 
 /* (description): The `solve_board` function will sovle a given sudoku board, 
@@ -44,7 +44,7 @@ static void unset_square(sudoku_t *, box_t *, int num, int i, int j);
  * then undefined behavior will occur.
  *
  */
-bool solve_board(sudoku_t *puzzle)
+bool solve_board(sudoku_t *puzzle, bool random)
 {
   box_t *square;
   int dim, *possible, count = 0;
@@ -63,10 +63,10 @@ bool solve_board(sudoku_t *puzzle)
           return false;
         }
         // Loop through all possibilites, and try them.
-        possible = possible_number(square->possible, dim); 
+        possible = possible_number(square->possible, dim, random); 
         while (possible[count++] != -1) {
           set_square(puzzle, square, possible[count - 1], i, j);
-          flag = solve_board(puzzle);
+          flag = solve_board(puzzle, false);
           if (!flag)
             unset_square(puzzle, square, possible[count - 1], i, j);
           else {
@@ -100,7 +100,7 @@ int is_unique(sudoku_t *puzzle)
           return 0;
         }
         // Loop through all possibilites, and try them.
-        possible = possible_number(square->possible, dim); 
+        possible = possible_number(square->possible, dim, false); 
         while (possible[count++] != -1) {
           set_square(puzzle, square, possible[count - 1], i, j);
           flag = is_unique(puzzle);
@@ -132,8 +132,7 @@ void unset_square(sudoku_t *puzzle, box_t *square, int num, int i, int j)
 }
 
 
-
-static int *possible_number(int number, int dim) {
+static int *possible_number(int number, int dim, bool random) {
   int num = 0, a, b, temp;
   int *numbers = calloc(dim + 1, sizeof(int));
 
@@ -144,6 +143,9 @@ static int *possible_number(int number, int dim) {
     }
   }
   numbers[num] = -1;
+
+  if (!random)
+    return numbers;
 
   // Randomize numbers.
   for (int i = 0; i < num; i++) {
@@ -390,17 +392,17 @@ static void test_invalid_puzzle(void)
 {
   sudoku_t *board;
 
-  assert(!solve_board(NULL)); 
+  assert(!solve_board(NULL, false)); 
   board = malloc(sizeof(sudoku_t));
   board->board = NULL;
-  assert(!solve_board(board));
+  assert(!solve_board(board, false));
   free(board);
   
   // Test boards that have no solution.
   int fd = open("tests/p4", O_RDONLY);
   dup2(fd, STDIN_FILENO);
   board = read_sudoku(true);
-  assert(!solve_board(board));
+  assert(!solve_board(board, false));
   delete_sudoku(board);
   
 } 
@@ -430,7 +432,7 @@ static void test_solved_puzzle(void)
       board->board[i][j]->num = arr[i][j];
     }
   }
-  assert(solve_board(board));
+  assert(solve_board(board, false));
   display(board);
   for (int i = 0; i < 9; i++) {
     for (int j = 0; j < 9; j++)
@@ -474,7 +476,7 @@ static void test_one_empty(void)
         board->board[i][j]->possible = 1 << 4;
     }
   }
-  assert(solve_board(board));
+  assert(solve_board(board, false));
   display(board);
   for (int i = 0; i < 9; i++) {
     for (int j = 0; j < 9; j++)
@@ -494,7 +496,7 @@ static void test_simple_puzzle(void)
   sudoku_t *board = read_sudoku(false);
   printf("Given board:\n");
   display(board);
-  assert(solve_board(board));
+  assert(solve_board(board, false));
   printf("Solved board:\n");
   display(board);
   delete_sudoku(board);
@@ -508,7 +510,7 @@ static void test_hard_puzzle1(void)
   sudoku_t *board = read_sudoku(false);
   printf("Given board:\n");
   display(board);
-  assert(solve_board(board));
+  assert(solve_board(board, false));
   printf("Solved board:\n");
   display(board);
   delete_sudoku(board);
