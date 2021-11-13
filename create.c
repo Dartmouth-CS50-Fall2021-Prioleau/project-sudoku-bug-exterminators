@@ -34,6 +34,7 @@ sudoku_t *create(bool difficult, int dim)
   // to be removed from the solved sudoku board.
   while (!pluck(puzzle, nums, difficult)) {
     puzzle = empty(dim);
+    solve_board(puzzle, true);
     nums = random_remove(dim);
   }
   free(nums);
