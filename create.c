@@ -116,6 +116,10 @@ static int *random_remove(int dim)
  *    - Easy : 37 given => 44 removed from the solved board.
  *    - Hard : 25 given => 56 removed from the solved board.
  *
+ * We note that if the OPTIMIZED flag is turned on, the pluck will try to pluck
+ * in a more optimzied way: checking for uniqueness not in order, but in order
+ * of most to least possible.
+ *
  * (inputs): A given sudoku puzzle that is completely solved, `coor` which 
  * represents an array of unique integers in the range [0,81). This 
  * represents the order in which certain squares are to be removed from the
@@ -138,6 +142,7 @@ static bool pluck(sudoku_t *puzzle, int *coor, bool difficulty)
   int temp, num, cols, rows;
   box_t *square;
   int count = 0;
+  int flag;
   int total = puzzle->dim * puzzle->dim;
   int removed = difficulty ? 56 : 44;
 
@@ -156,7 +161,20 @@ static bool pluck(sudoku_t *puzzle, int *coor, bool difficulty)
     // Removed the square to pre-set unique checking.
     unset_square(puzzle, square, num, rows, cols);
     // Check if board stil lhas unique solution.
-    if (is_unique(puzzle) == 1)
+#ifdef OPTIMIZED
+    box_t ***blanks;
+    if (removed < 35) {
+      flag = is_unique(puzzle);
+    } else {
+      blanks = blank_grids(puzzle);
+      flag = is_unique(puzzle, blanks);
+      delete_blank_box(blanks, 9); 
+    }
+#endif
+#ifndef OPTIMIZED
+    flag = is_unique(puzzle);
+#endif
+    if (flag == 1)
       count++;
     else {
       // If the removal of the square resulted in a non-unique solution

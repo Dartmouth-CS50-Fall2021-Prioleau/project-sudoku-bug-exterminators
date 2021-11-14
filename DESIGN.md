@@ -1,4 +1,4 @@
-# Design Specifications for Sudoku 2.0
+# Design Specifications for Sudoku 3.0
 This is the design spec for our sudoku project. It includes an overview of the 
 data structures that we will be using as well as some of the functions we 
 plan to implement.
