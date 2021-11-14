@@ -150,7 +150,14 @@ A series helper functions have been implemented, please refer to the detailed de
 	- The errors from the above tests result in a return (exit) with value `1` 
 
 ## Testing
-To be added after finishing test cases 
+
+Our testing consists of four parts:
+- Part I: Argument Validation
+- Part II: Testing creator 
+- Part III: Testing solver
+- Part Iv: Testing average time for creating and solving 
+
+Each part consists of a series of test cases. Please refer to the description of each cases for detailed information.
 
 	
 				
