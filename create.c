@@ -3,6 +3,7 @@
 #include<time.h>
 #include "board.h"
 #include "solve.h"
+#include "display.h"
 #include "create.h"
 #include "read.h"
 #include<stdbool.h>
@@ -29,7 +30,6 @@ sudoku_t *create(bool difficult, int dim)
 
   solve_board(puzzle, true);
   nums = random_remove(dim);
-
   // Index map from the ordinal numbers to coordinates that are 
   // to be removed from the solved sudoku board.
   while (!pluck(puzzle, nums, difficult)) {

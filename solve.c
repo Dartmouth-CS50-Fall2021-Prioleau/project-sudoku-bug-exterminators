@@ -10,7 +10,12 @@
  * CS50, Fall 2021, Sudoku Project
  * Sudoku solver module (solve.c)
  *
- * This module contains functions that are able to solv a given sudoku board.
+ * This module contains functions that are able to solve a given sudoku board.
+ * It can either solve a given board randomly or in a deterministic fashion 
+ * such that all numbers are tried linearly in increasing order. This module
+ * also includes two types of solves: the first is a pure brute force method
+ * with no optimization; the other solve squares in order of increasing number
+ * of possibilities. 
  */
 
 static bool find_possible(sudoku_t *puzzle, box_t *square, 
@@ -25,6 +30,7 @@ int num_of_possible(box_t* square, sudoku_t* puzzle, int row, int col, int box);
 void delete_blank_box(box_t*** blank_box, int dim);
 
 void set_square(sudoku_t *, box_t *, int num, int i, int j);
+
 void unset_square(sudoku_t *, box_t *, int num, int i, int j);
 
 
@@ -35,14 +41,19 @@ void unset_square(sudoku_t *, box_t *, int num, int i, int j);
  * a board, such that each box in the board must have its possible values 
  * initialized as well as its target number. If a non-NULL sudoku pointer has 
  * been passed, the function will assume that theses parameters have been 
- * initialized. Otherwise, there will be undefined behavior.
+ * initialized. Otherwise, there will be undefined behavior. The second 
+ * parameter `random` determines if the numbers that are being checked in the
+ * cell are being checked in order. If the parameter is false, then the solve
+ * will be deterministic (solving an empty board will result in the same 
+ * solution every time); otherwise, if the parameter is true, then the solve
+ * will be stochastic (solving an empty board will result in a random solved
+ * board evvery time).
  *
  * (outputs): True if the board can be solved, and false if not. The function
  * will modify the given sudoku board in place.
  *
  * (error handling): If the board given is not initialized appropriately 
  * then undefined behavior will occur.
- *
  */
 bool solve_board(sudoku_t *puzzle, bool random)
 {
@@ -50,30 +61,43 @@ bool solve_board(sudoku_t *puzzle, bool random)
   int dim, *possible, count = 0;
   bool flag;
 
+  // Check for invalid arguments.
   if (puzzle == NULL || puzzle->board == NULL)
     return false;
 
   dim = puzzle->dim; 
+  // Loop through all cells.
   for (int i = dim - 1; i >= 0; i--) {
     for (int j = dim - 1; j >= 0; j--) {
-      // Check if the box has a number, if so move on.
+      /* Check if the box has a number, if so move on. Otherwise, we solve
+       * that cell.
+       */
       square = puzzle->board[i][j];
       if (square->num == 0) {
+        // No possibilities that can go into this box, so this puzzle cannot
+        // be solved. Thus, false has to be returned.
         if (!find_possible(puzzle, square, i, j, box_index(i, j, dim))) {
           return false;
         }
-        // Loop through all possibilites, and try them.
+        // Generate possibilities either in order, or in random order. 
         possible = possible_number(square->possible, dim, random); 
         while (possible[count++] != -1) {
+          // "What-if? set the cell to the candidate value and check if this
+          // value works in this cell by recursively solving using this value.
           set_square(puzzle, square, possible[count - 1], i, j);
           flag = solve_board(puzzle, false);
+          // If the value does not work in this cell, then unset and move
+          // onto to next candidate value for this cell.
           if (!flag)
             unset_square(puzzle, square, possible[count - 1], i, j);
+          // Move on to the next cell if we found an appropriate candidate
+          // value for this cell.
           else {
             break;
           }
         }
         free(possible);
+        // Check if no candidate values work here.
         return square->num != 0;
       }
     }
@@ -81,12 +105,24 @@ bool solve_board(sudoku_t *puzzle, bool random)
   return true;
 }
 
+/* (description): The `is_unique` function checks if a given sudoku puzzle
+ * has a unqiue solution. 
+ *
+ * (inputs): The puzzle provided must contain a initialized sudoku puzzle. 
+ * Such that the bit-strings for possibilites must be initialized according
+ * to the givens. If these are not initialized appropriately, then undefined
+ * behavior will be expected.
+ *
+ * (outputs): True, if the given puzzle is unique. False if the puzzle is not
+ * unique or if it cannot be solved.
+ */
 int is_unique(sudoku_t *puzzle)
 {
   box_t *square;
   int dim, *possible, count = 0, sols = 0;
   int flag;
 
+  // Check if the puzzle is invalid.
   if (puzzle == NULL || puzzle->board == NULL)
     return false;
 
@@ -102,10 +138,21 @@ int is_unique(sudoku_t *puzzle)
         // Loop through all possibilites, and try them.
         possible = possible_number(square->possible, dim, false); 
         while (possible[count++] != -1) {
+          // What-if? check set the square to the candidate number and then 
+          // try to solve the resulting board with this number.
           set_square(puzzle, square, possible[count - 1], i, j);
           flag = is_unique(puzzle);
+          // If this number was possible, then we add it as a possible 
+          // solution.
           sols += flag;
+         // Unset the candidate number and try another number, until we
+          // exhaust all possibilities for this square.
           unset_square(puzzle, square, possible[count - 1], i, j);
+          if (sols > 1) {
+            free(possible);
+            return sols;
+          }
+ 
         }
         free(possible);
         return sols;
@@ -115,6 +162,16 @@ int is_unique(sudoku_t *puzzle)
   return 1;
 }
 
+/* (description): The `set_square` function sets a given square in the sudoku
+ * to the provided value. It also modifies the bit-strings representing the 
+ * possibilites in each row, column, box to reflect this change.
+ *
+ * (inputs): The puzzle whose square is being modified, the square whose value
+ * is being set, the number that the square is being set to, the cartesian 
+ * coordinates of the box with respect to the puzzle (such that the top 
+ * left corner represents (0,0)). We note that the square must be an object 
+ * that is a part of the puzzle's board.
+ */
 void set_square(sudoku_t* puzzle, box_t *square, int num, int i, int j)
 {
   square->num = num;
@@ -123,6 +180,16 @@ void set_square(sudoku_t* puzzle, box_t *square, int num, int i, int j)
   puzzle->boxes[box_index(i, j, puzzle->dim)] |= 1 << (num - 1);
 }
 
+/* (description): The `unset_square` function sets a given square in the sudoku
+ * to the provided value. It also modifies the bit-strings representing the 
+ * possibilites in each row, column, box to reflect this change.
+ *
+ * (inputs): The puzzle whose square is being modified, the square whose value
+ * is being set, the number that the square is being set to, the cartesian 
+ * coordinates of the box with respect to the puzzle (such that the top 
+ * left corner represents (0,0)). We note that the square must be an object 
+ * that is a part of the puzzle's board.
+ */
 void unset_square(sudoku_t *puzzle, box_t *square, int num, int i, int j)
 {
   square->num = 0;
@@ -132,7 +199,20 @@ void unset_square(sudoku_t *puzzle, box_t *square, int num, int i, int j)
 }
 
 
-static int *possible_number(int number, int dim, bool random) {
+/* (description): The `possible_number` function returns the possible numbers 
+ * that a given square in the sudoku board can manifest. It can return these 
+ * numbers in order or in random order.
+ *
+ * (inputs): The bit string of possibilities that can go into a particular 
+ * square, the dimension of the puzzle, and a flag that denotes whether or
+ * not these possiblities should be returned in random order or in order.
+ *
+ * (outputs): If the given `random` flag is true, then the possible numbers
+ * will be returned in increasing order. Otherwise, the possible numbers will
+ * be returned in decreasing order.
+ */
+static int *possible_number(int number, int dim, bool random)
+{
   int num = 0, a, b, temp;
   int *numbers = calloc(dim + 1, sizeof(int));
 
@@ -142,12 +222,15 @@ static int *possible_number(int number, int dim, bool random) {
       numbers[num++] = k + 1; 
     }
   }
+
   numbers[num] = -1;
 
-  if (!random)
+  if (!random) {
     return numbers;
+  }
 
-  // Randomize numbers.
+  // Randomize numbers by generating random indices and swapping the values 
+  // of these indices.
   for (int i = 0; i < num; i++) {
     a = rand() % num;
     b = rand() % num;
@@ -195,7 +278,6 @@ box_t*** blank_grids(sudoku_t* puzzle)
 {
   // get dimmension
   int dim = puzzle->dim;
-  //printf("Initializing blank grids data structures ... \n"); 
   // initialize the data structures
   box_t*** blank_box = malloc(dim * sizeof(box_t**));
   if(blank_box == NULL){
@@ -208,7 +290,6 @@ box_t*** blank_grids(sudoku_t* puzzle)
   for(int i=0; i<dim; i++){
     blank_box[i] = calloc(dim*dim, sizeof(box_t*));
     if(blank_box[i] == NULL){
-      //fprintf(stderr, "Failed to malloc for array\n");
       //delete the blank box 
       delete_blank_box(blank_box, dim);
       
@@ -218,33 +299,25 @@ box_t*** blank_grids(sudoku_t* puzzle)
       exit(2);
     }
   }
-  //printf("initialize index ...\n");
   // index to store the box_t*
   int index[dim];
   for(int i=0; i<dim; i++){
     index[i] = 0;
   }
-  
-  //int ttl = 0;
-  //printf("Loop through the puzzle to store the blank grids ... \n");
 
   for(int i=0; i<dim; i++){
     for(int j=0; j<dim; j++){
       //printf("i and j = %d, %d\n", i, j);
       box_t* current_box = puzzle->board[i][j];
       if(current_box->num == 0){
-        //ttl++;
-	//printf("find a blank grid\n");
         // calculate the number of possibilities for this grid
         int count = num_of_possible(current_box, puzzle, i, j, box_index(i,j,dim));
-        //printf("%d , ", count);
         // insert the current box to the right place
         blank_box[count - 1][(index[count - 1])++] = current_box;
       }
     }
   }
 
-  //printf("\nThere is a total of %d blank grids\n", ttl);
   return blank_box;
 }
 
@@ -338,6 +411,7 @@ int main(void)
   test_hard_puzzle1();
 }
 
+// Test if is_unique can determine if simple puzzle is non-unique.
 static void test_unique_simple(void)
 {
   // Non-unique board.
@@ -351,6 +425,7 @@ static void test_unique_simple(void)
   delete_sudoku(board);
 }
 
+// Test if is_unique can determine if hard puzzle is non-unique.
 static void test_unique_hard1(void)
 {
   // Non-unqiue board.
@@ -364,6 +439,7 @@ static void test_unique_hard1(void)
   delete_sudoku(board);
 }
 
+// Test to see if unique can determine if hard unique puzzle is unique.
 static void test_unique_hard2(void)
 {
   int fd = open("tests/p1", O_RDONLY);
@@ -376,6 +452,7 @@ static void test_unique_hard2(void)
   delete_sudoku(board);
 }
 
+// Test to see if unqiue can determine if hard unique puzzle is non-unique.
 static void test_unique_hard3(void)
 {
   int fd = open("tests/p7", O_RDONLY);
@@ -388,6 +465,7 @@ static void test_unique_hard3(void)
   delete_sudoku(board);
 }
 
+// Test to see if solve can handle invalid puzzles.
 static void test_invalid_puzzle(void)
 {
   sudoku_t *board;
@@ -407,6 +485,7 @@ static void test_invalid_puzzle(void)
   
 } 
 
+// Test to see if solve can handle a solved puzzle.
 static void test_solved_puzzle(void)
 {
   int arr[9][9] = {
@@ -443,6 +522,7 @@ static void test_solved_puzzle(void)
   free(board);
 }
 
+// Testing to see if solve can solve a puzzle with one missing.
 static void test_one_empty(void)
 {
   int arr[9][9] = {
@@ -488,6 +568,7 @@ static void test_one_empty(void)
   free(board);
 }
 
+// Testing if solve can solve a simple puzzle.
 static void test_simple_puzzle(void)
 {
   int fd = open("tests/p1", O_RDONLY);
@@ -502,6 +583,8 @@ static void test_simple_puzzle(void)
   delete_sudoku(board);
 }
 
+/* Testing if solve can solve a hard puzzle 1.
+ */
 static void test_hard_puzzle1(void)
 {
   int fd = open("tests/p2", O_RDONLY);
