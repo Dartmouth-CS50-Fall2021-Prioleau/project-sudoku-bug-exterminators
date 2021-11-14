@@ -1,11 +1,3 @@
-#include "read.h"
-#include "display.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <ctype.h>
-#include <math.h>
-
-
 /* Alan Sun, Arden Guo
  * CS50, Fall 2021, Sudoku Project
  * Read from Stdin (read.c)
@@ -18,6 +10,13 @@
  * in the board for further processing.
  */
 
+#include "read.h"
+#include "display.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <ctype.h>
+#include <math.h>
+
 /* (description): Reads a sudoku puzzle from stdin, 
  *                extracts and stores the numbers in 
  *                the sudoku data structure.
@@ -26,12 +25,9 @@
  *
  * (outputs): The function will return a pointer to sudoku.
  * 
- * (Support): Right now, the read function supports two-digit numbers as well
- * 
- * (TODO):  Before exiting for each case, need to free the momery.
+ * (Support): So far, the read function supports reading two-digit numbers
  *
  */
-
 sudoku_t *read_sudoku(bool difficult)
 {
     // create sudoku
@@ -139,7 +135,7 @@ sudoku_t *read_sudoku(bool difficult)
  *
  * (inputs): A boolean value indicates if it is a difficult mode
  *
- * (outputs): The function will return a pointer to sudoku with all data initialized.
+ * (Return): The function will return a pointer to sudoku with all data initialized.
  *
  * (support): 
  */
@@ -197,17 +193,6 @@ sudoku_t *sudoku_ini(bool difficult, sudoku_t* sudoku)
         }
     }
 
-    // initialization of grid possibility - implemented by the solver
-    // for(int i = 0; i< dim; i++){
-    //     for(int j = 0; j<dim; j++){
-    //         box_t* grid = board[i][j];
-    //         if(grid->num != 0){
-    //             int k = box_index(i, j, dim);
-    //             grid->possible = ~(row[i] | col[j] | box[k]);
-    //         }
-    //     }
-    // }
-
     return sudoku;
 }
 
@@ -215,7 +200,7 @@ sudoku_t *sudoku_ini(bool difficult, sudoku_t* sudoku)
  *
  * (inputs): dim - represent the size of the array
  *
- * (outputs): a malloced array
+ * (Return): a malloced array
  *
  */
 int* array_create(int dim, sudoku_t* sudoku)
@@ -236,7 +221,7 @@ int* array_create(int dim, sudoku_t* sudoku)
  * (inputs): dim is the size of sudoku board for each dimension
  *           row and col are the indices indicating the position of the grid
  *
- * (outputs): an integer - the index of the box for the current grid
+ * (Return): an integer - the index of the box for the current grid
  *
  */
 int box_index(int row, int col, int dim)
@@ -245,6 +230,17 @@ int box_index(int row, int col, int dim)
     return (row / box_size) * box_size + (col / box_size);
 }
 
+/*
+ * (description): Clean up the memory for the sudoku board
+ *
+ * (input): sudoku - the puzzle
+ * 
+ * (implementation): The function starts by freeing each cell,
+ *                   then, it frees each row in the 2D board,
+ *                   followed by free the whole board. Finally,
+ *                   the function frees the rows, columns and 
+ *                   boxes.
+ */
 void delete_sudoku(sudoku_t* sudoku)
 {
     if(sudoku != NULL){
@@ -287,6 +283,15 @@ void delete_sudoku(sudoku_t* sudoku)
     }
 }
 
+/*
+ * (Description): The function takes in an integer and returns
+ *                a string representing the binary format of the
+ *                integer.
+ * (Inputs): n - integer
+ *           len - the length of the binary format
+ * 
+ * (Return): a string representing the binary format of the integer
+ */
 char* binary_format(int n, int len)
 {   
 
