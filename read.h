@@ -1,5 +1,6 @@
 #ifndef READ_H
 #define READ_H
+
 /* Alan Sun, Arden Guo
  * CS50, Fall 2021, Sudoku Solver Project
  * Read Sudoku (read.h)
@@ -9,6 +10,9 @@
 
 #include "board.h"
 #include <stdbool.h>
+
+/*************** Function prototypes *****************/
+// please see the description above each function in read.c
 
 sudoku_t *read_sudoku(bool difficult);
 sudoku_t *sudoku_ini(bool difficulty, sudoku_t* sudoku);
