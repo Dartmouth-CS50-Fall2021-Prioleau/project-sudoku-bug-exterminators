@@ -81,7 +81,7 @@ sudoku_t *read_sudoku(bool difficult)
                 fprintf(stderr, "Input number of numbers exceeds the required amount.\n");
                 // delete before exiting
                 delete_sudoku(sudoku);
-                exit(3);
+                exit(2);
             }    
 
             // '.' is specific to our design of blank grid
@@ -169,19 +169,19 @@ sudoku_t *sudoku_ini(bool difficult, sudoku_t* sudoku)
                 if((row[i] >> (num -1))%2 == 1){
                     fprintf(stderr,"Duplicate %d in the row.\n", num);
                     delete_sudoku(sudoku);
-                    exit(5);
+                    exit(2);
                 }
 
                 if((col[j] >> (num -1))%2 == 1){
                     fprintf(stderr,"Duplicate %d in the column.\n", num);
                     delete_sudoku(sudoku);
-                    exit(5);
+                    exit(2);
                 }
 
                 if((box[k] >> (num -1))%2 == 1){
                     fprintf(stderr,"Duplicate %d in the box.\n", num);
                     delete_sudoku(sudoku);
-                    exit(5);
+                    exit(2);
                 }
 
                 // save records
