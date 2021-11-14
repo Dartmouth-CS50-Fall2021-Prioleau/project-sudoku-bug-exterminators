@@ -99,17 +99,20 @@ void display(sudoku_t *puzzle)
     }
     printf("| ");
     for (int j = 0; j < puzzle->dim; j++) {
+      // If a number exists at the current square, then we print that number.
       if (puzzle->board[i][j]->num != 0) {
         if (puzzle->dim == 16)
           printf("%2d", puzzle->board[i][j]->num); 
         else
           printf("%d", puzzle->board[i][j]->num); 
+      // Otherwise, we print the place holder: the . character.
       } else  {
         if (puzzle->dim == 16)
           printf(" .");
         else 
           printf(".");
       }
+      // Format boxes with the pipe character.
       if ((j + 1) % box_size == 0)
         printf(" | ");
       else
@@ -176,6 +179,7 @@ int main(void)
   }
 }
 
+// Test printing null board. Should print nothing.
 void test_invalids_simple(void)
 {
   sudoku_t *s = malloc(sizeof(sudoku_t *));
@@ -185,6 +189,7 @@ void test_invalids_simple(void)
   free(s);
 }
 
+// Test printing null board. Should print nothing.
 void test_invalids_pretty(void)
 {
   sudoku_t *s = malloc(sizeof(sudoku_t *));
@@ -194,6 +199,7 @@ void test_invalids_pretty(void)
   free(s);
 }
 
+// Test printing random board in a simple format.
 void test_simple_simple(void)
 {
   sudoku_t *s = malloc(sizeof(sudoku_t));
@@ -216,6 +222,7 @@ void test_simple_simple(void)
   free(s);
 }
 
+// Test printing random board in a pretty format.
 void test_simple_pretty(void)
 {
   sudoku_t *s = malloc(sizeof(sudoku_t));
