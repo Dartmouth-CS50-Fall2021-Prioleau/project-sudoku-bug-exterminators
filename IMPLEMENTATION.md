@@ -117,8 +117,8 @@ step 3: initialize the row, column, box array by using dynamic memory allocator
 The project displays a puzzle in the following format. The function loop through the board and print out the puzzle.
 ```
 
- 	+-------+-------+-------+
- 	| 9 . . | . . . | . . 1 |
+    +-------+-------+-------+
+    | 9 . . | . . . | . . 1 |
     | . . . | . . 2 | . . . |
     | . . . | . . 3 | . . . |
     +-------+-------+-------+
