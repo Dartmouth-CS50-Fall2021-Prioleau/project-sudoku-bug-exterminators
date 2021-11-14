@@ -14,7 +14,7 @@ int main(const int argv, char* argc[]){
     char* program = argc[0];
     srand(time(NULL));
     // check the number of arguments
-    if(argv != 3){
+    if(argv != 3 && argv != 2){
         fprintf(stderr, "Usage: %s mode difficulty\n", program);
         return 1;
     }
@@ -26,39 +26,48 @@ int main(const int argv, char* argc[]){
         return 1;
     }
 
-    // check difficulty
-    char* difficulty = argc[2];
-    if(strcmp(difficulty, "easy")!=0 && strcmp(difficulty, "hard")!=0){
-        fprintf(stderr, "Usage: %s mode difficulty, difficulty should be either \"easy\" or \"hard\"\n", program);
-        return 1;
-    }
 
-    // calling the functions
-    bool difficult = strcmp(difficulty,"hard") == 0;
+    // calling creator or solver
     int dim = 9;
-    if(strcmp(mode,"create")==0){
-        // creator
+    if(argv == 3){
+        /************* calling creator **************/
+        // check difficulty for creator
+        char* difficulty = argc[2];
+        if(strcmp(difficulty, "easy")!=0 && strcmp(difficulty, "hard")!=0){
+            fprintf(stderr, "Usage: %s mode difficulty, difficulty should be either \"easy\" or \"hard\"\n", program);
+            return 1;
+        }
+        bool difficult = strcmp(difficulty,"hard") == 0;
+
+        // create sudoku
         sudoku_t* sudoku = create(difficult, dim);
-	if(sudoku == NULL){
-	    fprintf(stderr, "Failed to create a sudoku.\n");
-	    return 1;
-	}
-	display(sudoku);
+        if(sudoku == NULL){
+            fprintf(stderr, "Failed to create a sudoku.\n");
+            return 1;
+        }
 
-    //printf("\n Testing the blank grids...\n");
-    //blank_grids(sudoku);
+        // display sudoku
+        display(sudoku);
 
-	// clear the memory
-	delete_sudoku(sudoku);
+        // clean the memory
+        delete_sudoku(sudoku);
     }else{
-        // solver
-        sudoku_t* sudoku = read_sudoku(false); // TODO: need to corresponds the param to the dim
+        /************* calling solver **************/
+        // read sudoku
+        sudoku_t* sudoku = read_sudoku(false); 
         if(sudoku == NULL){
             fprintf(stderr, "Failed to read from sudoku.\n");
             return 1;
         }
+
+        // solve sudoku
         solve_board(sudoku, false);
+        
+        // display sudoku
         display(sudoku);
+
+        // clean up memory
+        delete_sudoku(sudoku);
     }
 
     return 0;
