@@ -1,3 +1,17 @@
+/* 
+ * CS50, Fall 2021, Sudoku Project
+ *
+ * @File: sudoku.c - The sudoku program can either create a puzzle with a difficulty
+ *                   specified or solve a puzzle
+ * 
+ * @Usage: ./sudoku mode difficulty
+ *         mode - either create or solve
+ *         difficulty - either easy or hard (only required for create mode)
+ * 
+ * @Author: Alan Sun, Arden Guo
+ * 
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -9,6 +23,11 @@
 #include "read.h"
 #include "display.h"
 
+/*
+ * main - takes in either 2 or 3 arguents, creates or solve a sudoku puzzle
+ * 
+ * @Usage: please refer to the header information  
+ */
 int main(const int argv, char* argc[]){
     // get the program
     char* program = argc[0];
