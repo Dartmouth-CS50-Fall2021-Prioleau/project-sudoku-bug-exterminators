@@ -162,6 +162,53 @@ int is_unique(sudoku_t *puzzle)
   return 1;
 }
 
+int is_unique_quick(sudoku_t *puzzle, box_t ***blanks)
+{
+  box_t *square;
+  int dim, *possible, count = 0, sols = 0;
+  int flag, j = 0;
+
+  // Check if the puzzle is invalid.
+  if (puzzle == NULL || puzzle->board == NULL)
+    return false;
+
+  dim = puzzle->dim; 
+  for (int i = 0; i < dim; i++) {
+    while (blanks[i][j] != NULL) {
+      // Check if the box has a number, if so move on.
+      square = blanks[i][j];
+      if (square->num == 0) {
+        if (!find_possible(puzzle, square, i, j, box_index(i, j, dim))) {
+          return 0;
+        }
+        // Loop through all possibilites, and try them.
+        possible = possible_number(square->possible, dim, false); 
+        while (possible[count++] != -1) {
+          // What-if? check set the square to the candidate number and then 
+          // try to solve the resulting board with this number.
+          set_square(puzzle, square, possible[count - 1], i, j);
+          flag = is_unique(puzzle);
+          // If this number was possible, then we add it as a possible 
+          // solution.
+          sols += flag;
+         // Unset the candidate number and try another number, until we
+          // exhaust all possibilities for this square.
+          unset_square(puzzle, square, possible[count - 1], i, j);
+          if (sols > 1) {
+            free(possible);
+            return sols;
+          }
+ 
+        }
+        free(possible);
+        return sols;
+      }
+      j++;
+    }
+  }
+  return 1;
+}
+
 /* (description): The `set_square` function sets a given square in the sudoku
  * to the provided value. It also modifies the bit-strings representing the 
  * possibilites in each row, column, box to reflect this change.
