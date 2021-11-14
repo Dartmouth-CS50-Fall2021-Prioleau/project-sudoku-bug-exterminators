@@ -22,9 +22,11 @@ static int *random_remove(int dim);
 
 sudoku_t *create(bool difficult, int dim)
 { 
+  // randomize the seed for rand
   struct timeval current_time;
   gettimeofday(&current_time, NULL);
   srand(current_time.tv_usec);
+  
   sudoku_t *puzzle = empty(dim);
   int *nums;
 

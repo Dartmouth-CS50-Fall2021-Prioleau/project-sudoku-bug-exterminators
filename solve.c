@@ -304,10 +304,8 @@ box_t*** blank_grids(sudoku_t* puzzle)
   for(int i=0; i<dim; i++){
     index[i] = 0;
   }
-
   for(int i=0; i<dim; i++){
     for(int j=0; j<dim; j++){
-      //printf("i and j = %d, %d\n", i, j);
       box_t* current_box = puzzle->board[i][j];
       if(current_box->num == 0){
         // calculate the number of possibilities for this grid
@@ -317,7 +315,6 @@ box_t*** blank_grids(sudoku_t* puzzle)
       }
     }
   }
-
   return blank_box;
 }
 
@@ -335,12 +332,11 @@ box_t*** blank_grids(sudoku_t* puzzle)
  */
 int num_of_possible(box_t* square, sudoku_t* puzzle, int row, int col, int box)
 {
-  //printf("Get the number of possible numbers ... \n");
   // get the possible number
   square->possible = ~(puzzle->rows[row] | puzzle->columns[col] | 
                           puzzle->boxes[box]);
   square->possible &= (int) pow(2, puzzle->dim) - 1;
-  //printf("binary format is %s\n",binary_format(square->possible, 9));
+
   // count the number of 1s in the possible
   int count = 0;
   int dim = puzzle->dim;
