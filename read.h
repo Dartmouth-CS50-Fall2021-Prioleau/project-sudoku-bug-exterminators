@@ -1,12 +1,12 @@
+#ifndef READ_H
+#define READ_H
+
 /* Alan Sun, Arden Guo
  * CS50, Fall 2021, Sudoku Solver Project
  * Read Sudoku (read.h)
  *
  * Function prototypes for module that reads a given sudoku board.
  */
-
-#ifndef READ_H
-#define READ_H
 
 #include "board.h"
 #include <stdbool.h>
