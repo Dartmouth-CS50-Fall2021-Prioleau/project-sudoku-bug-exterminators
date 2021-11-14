@@ -1,4 +1,3 @@
-
 # ******************** Test Part I - Argument Validation ************************
 
 # 1. number of arguments less than 2
@@ -44,9 +43,41 @@
 # ******************** Test Part IV - Average Time Testing ************************
 
 # 12. average time for creating 50 easy puzzle
-start=$SECONDS
+start=`date +%s.%N`
 for i in {1..50}
 do
     ./sudoku create easy
 done
-duration=$(( SECONDS - start ))
+end=`date +%s.%N`
+runtime=$( echo "($end - $start) / 50 " | bc -l )
+echo "Average time for creating an easy puzzle: $runtime"
+
+# 13. average time for creating 50 hard puzzle
+start=`date +%s.%N`
+for i in {1..50}
+do
+    ./sudoku create hard
+done
+end=`date +%s.%N`
+runtime=$( echo "($end - $start) / 50 " | bc -l )
+echo "Average time for creating a hard puzzle: $runtime"
+
+# 14. average time for creating and solving 50 easy puzzle
+start=`date +%s.%N`
+for i in {1..50}
+do
+    ./sudoku create easy | ./sudoku solve
+done
+end=`date +%s.%N`
+runtime=$( echo "($end - $start) / 50 " | bc -l )
+echo "Average time for creating and solvng an easy puzzle: $runtime"
+
+# 15. average time for creating and solving 50 hard puzzle
+start=`date +%s.%N`
+for i in {1..50}
+do
+    ./sudoku create hard | ./sudoku solve
+done
+end=`date +%s.%N`
+runtime=$( echo "($end - $start) / 50 " | bc -l )
+echo "Average time for creating and solving a hard puzzle: $runtime"
