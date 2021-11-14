@@ -15,14 +15,14 @@ int main(const int argv, char* argc[]){
     srand(time(NULL));
     // check the number of arguments
     if(argv != 3 && argv != 2){
-        fprintf(stderr, "Usage: %s mode difficulty\n", program);
+        fprintf(stderr, "Usage: %s mode difficulty (difficulty is only required for create mode)\n", program);
         return 1;
     }
 
     // check mode
     char* mode = argc[1];
     if(strcmp(mode, "create") != 0 && strcmp(mode, "solve") != 0){
-        fprintf(stderr, "Usage: %s mode difficulty, mode should be either \"create\" or \"solve\"\n", program);
+        fprintf(stderr, "Usage: %s mode difficulty (difficulty is only required for create mode), mode should be either \"create\" or \"solve\"\n", program);
         return 1;
     }
 
@@ -31,10 +31,16 @@ int main(const int argv, char* argc[]){
     int dim = 9;
     if(argv == 3){
         /************* calling creator **************/
+        // check mode must be create
+        if(strcmp(mode, "create") != 0){
+        fprintf(stderr, "Usage: %s mode difficulty (difficulty is only required for create mode) \n", program);
+        return 1;
+        }
+
         // check difficulty for creator
         char* difficulty = argc[2];
         if(strcmp(difficulty, "easy")!=0 && strcmp(difficulty, "hard")!=0){
-            fprintf(stderr, "Usage: %s mode difficulty, difficulty should be either \"easy\" or \"hard\"\n", program);
+            fprintf(stderr, "Usage: %s mode difficulty (difficulty is only required for create mode), difficulty should be either \"easy\" or \"hard\"\n", program);
             return 1;
         }
         bool difficult = strcmp(difficulty,"hard") == 0;
@@ -53,6 +59,12 @@ int main(const int argv, char* argc[]){
         delete_sudoku(sudoku);
     }else{
         /************* calling solver **************/
+        // check mode must be solve
+        if(strcmp(mode, "solve") != 0){
+        fprintf(stderr, "Usage: %s mode difficulty (difficulty is only required for create mode) \n", program);
+        return 1;
+        }
+
         // read sudoku
         sudoku_t* sudoku = read_sudoku(false); 
         if(sudoku == NULL){
