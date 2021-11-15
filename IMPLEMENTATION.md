@@ -144,33 +144,6 @@ times slower than our original algorithm.
 - Thoughts
 	- We think the slowing down might be caused by the time used for pre-sorting the blank cells.
 
-## Modularity and Motivation
-```
-project
-│   README.md		
-│   DESIGN.md
-|	IMPLEMENTATION.md
-|	Makefile
-|	
-|	board.h			# data structure
-|
-|	read.h			# read the puzzle, initialize data structure
-|	read.c
-|
-|	create.h		# create sudoku puzzle
-|	create.c
-|
-|	solve.h			# solve sudoku puzzle
-|	solve.c
-|
-|	display.h		# display sudoku puzzle
-|	display.c
-|
-|	sudoku.c		# the main program
-│
-│   
-```
-- Different functions has been written within different places for better modularity.
 
 ## Error Handling and Recovery
 
@@ -187,16 +160,8 @@ project
 	- The errors from the above tests result in a return (exit) with value `1` 
 
 ## Testing
+Please refer testing.md for more information
 
-- Unit Test
-	- Unit test has been implemented within each module, except sudoku which use the `testing.sh`
-- Our testing consists of four parts:
-	- Part I: Argument Validation
-	- Part II: Testing creator 
-	- Part III: Testing solver
-	- Part Iv: Testing average time for creating and solving 
-
-Each part consists of a series of test cases. Please refer to the description of each cases for detailed information.
 
 	
 				
