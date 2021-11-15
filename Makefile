@@ -45,7 +45,7 @@ test:
 	./testing.sh &> testing.out
 
 valgrind:
-	./testing.sh CHECK_MEMORY &> testing.out
+	./testing.sh CHECK_MEMORY &> val.out
 
 clean:
 	rm -rf testing.out

@@ -61,6 +61,8 @@ sudoku_t *create(bool difficult, int dim)
   // Index map from the ordinal numbers to coordinates that are 
   // to be removed from the solved sudoku board.
   while (!pluck(puzzle, nums, difficult)) {
+    delete_sudoku(puzzle);
+    free(nums);
     puzzle = empty(dim);
     solve_board(puzzle, true);
     nums = random_remove(dim);
