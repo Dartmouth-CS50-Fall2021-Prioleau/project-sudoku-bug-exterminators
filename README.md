@@ -97,4 +97,6 @@ The main function which checks the arguments and tries to either create or solve
 use's specification of mode and difficulty levels 
 
 
+## Other information
+For other information, please refer to `IMPLEMENTATION.md`
 
