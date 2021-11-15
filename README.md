@@ -43,6 +43,7 @@ project
 - Solve
     - `./sudoku solve`
 - run `make test` to test
+- run `make valgrind` to check memory leaks
 
 ## Functionality
 
