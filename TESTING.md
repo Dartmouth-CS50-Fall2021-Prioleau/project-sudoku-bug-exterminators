@@ -2,6 +2,7 @@
 
 - Unit Test
 	- Unit test has been implemented within each module, except sudoku which use the `testing.sh`
+	- The unit tests need the `tests folder`
 
 - Our testing consists of four parts:
 	- Part I: Argument Validation

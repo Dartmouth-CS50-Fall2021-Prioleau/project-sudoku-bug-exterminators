@@ -7,6 +7,17 @@ GitHub usernames: alansun17904, ArdenDartmouth
 ## Modularity and Motivation (Directory Tree and functions)
 ```
 project
+├── tests           # contains puzzles needed by unit test
+|       ├── p1
+|       ├── p2
+|       ├── p3
+|       ├── p4
+|       ├── p5
+|       ├── p6
+|       ├── p7
+|       ├── p8
+|       ├── puzzles
+|
 ├── .gitignore
 ├── README.md		
 ├── DESIGN.md
