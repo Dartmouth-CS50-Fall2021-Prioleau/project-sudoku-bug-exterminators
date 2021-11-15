@@ -13,5 +13,6 @@ sudoku
 test
 read
 
-# Testing
-testing.out
+# test files
+val.out
+
