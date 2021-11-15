@@ -10,8 +10,8 @@ project
 ├── .gitignore
 ├── README.md		
 ├── DESIGN.md
-├──	IMPLEMENTATION.md
-├──	Makefile
+├── IMPLEMENTATION.md
+├── Makefile
 |	
 ├──	board.h			# data structure
 |
