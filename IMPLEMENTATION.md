@@ -135,6 +135,16 @@ The project displays a puzzle in the following format. The function loop through
 
 A series helper functions have been implemented, please refer to the detailed descriptions.
 
+## Optimization
+
+- Instead of looping through the 2D array puzzle and tries the possible numbers for each blank cell,
+we start fill the blank cell with the least possible number of numbers. However, it turned out to be 2 to 4
+times slower than our original algorithm.
+
+- Thoughts
+	- We think the slowing down might be caused by the time used for pre-sorting the blank cells.
+
+
 ## Error Handling and Recovery
 
 - Malloc Error
@@ -150,6 +160,7 @@ A series helper functions have been implemented, please refer to the detailed de
 	- The errors from the above tests result in a return (exit) with value `1` 
 
 ## Testing
+Please refer `testing.md` for more information
 
 Our testing consists of four parts:
 - Part I: Argument Validation
@@ -158,3 +169,4 @@ Our testing consists of four parts:
 - Part Iv: Testing average time for creating and solving 
 
 Each part consists of a series of test cases. Please refer to the description of each cases for detailed information.
+
