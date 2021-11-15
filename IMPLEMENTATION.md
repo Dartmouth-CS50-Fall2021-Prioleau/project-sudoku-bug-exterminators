@@ -158,9 +158,3 @@ Our testing consists of four parts:
 - Part Iv: Testing average time for creating and solving 
 
 Each part consists of a series of test cases. Please refer to the description of each cases for detailed information.
-
-	
-				
-		
-
-
