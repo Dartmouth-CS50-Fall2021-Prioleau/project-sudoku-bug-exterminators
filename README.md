@@ -92,6 +92,7 @@ void unset_square(sudoku_t *, box_t *, int num, int i, int j);
     - unset the cell and revert the row, column and box back to the origin
 
 - `sudoku module`
+
 The main function which checks the arguments and tries to either create or solve a puzzle according to 
 use's specification of mode and difficulty levels 
 
