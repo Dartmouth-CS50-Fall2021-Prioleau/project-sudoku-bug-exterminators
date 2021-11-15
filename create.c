@@ -172,11 +172,15 @@ static bool pluck(sudoku_t *puzzle, int *coor, bool difficulty)
     }
 #endif
 #ifndef OPTIMIZED
+    if (count < 30) {
+      count++;
+      continue;
+    }
     flag = is_unique(puzzle);
 #endif
-    if (flag == 1)
+    if (flag == 1) {
       count++;
-    else {
+    } else {
       // If the removal of the square resulted in a non-unique solution
       // then we restore the square and try to removed a different one.
       set_square(puzzle, square, num, rows, cols);
